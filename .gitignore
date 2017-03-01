@@ -1,0 +1,8 @@
+*.o
+*.log
+log.txt
+SPCBIR
+SPCBIR_TESTS
+FinalProject.pdf
+.idea/
+cmake-build-debug/
