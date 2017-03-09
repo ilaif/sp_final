@@ -161,6 +161,13 @@ int loadConfigFromFile(FILE *f, const char *filename, SP_CONFIG_MSG *msg) {
                 return i;
             };
             strcpy(config->spPCAFilename, val);
+        } else if (strcmp(key, "spLoggerFilename") == 0) {
+            if (strchr(val, space) != NULL) {
+                *msg = SP_CONFIG_INVALID_STRING;
+                spRegularMessage(INVALID_VALUE, filename, i);
+                return i;
+            };
+            strcpy(config->spLoggerFilename, val);
         } else if (strcmp(key, "spKDTreeSplitMethod") == 0) {
             if (strcmp(val, "RANDOM") == 0) {
                 config->spKDTreeSplitMethod = RANDOM;
@@ -256,6 +263,7 @@ void validateConfig(const char *filename, int num_lines, SP_CONFIG_MSG *msg) {
 
 SPConfig spConfigCreate(const char *filename, SP_CONFIG_MSG *msg) {
     assert(msg != NULL);
+    *msg = SP_CONFIG_SUCCESS;
 
     if (filename == NULL) { //Already exists
         *msg = SP_CONFIG_INVALID_ARGUMENT;

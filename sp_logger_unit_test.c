@@ -71,7 +71,7 @@ static bool basicLoggerDebugTest() {
 }
 
 int main() {
-    RUN_TEST(basicLoggerTest);
+    RUN_TEST(basicConfigTest);
     RUN_TEST(basicLoggerErrorTest);
     RUN_TEST(basicLoggerDebugTest);
     return 0;

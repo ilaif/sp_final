@@ -5,14 +5,15 @@
 #include "SPConfig.h"
 
 //Logger is not defined
-static bool basicLoggerTest() {
+static bool basicConfigTest() {
     SP_CONFIG_MSG *msg = (SP_CONFIG_MSG *) malloc(sizeof(msg));
     SPConfig conf = spConfigCreate("/Users/ilaif/uni/software-project/final/basicConfigTest.cnf", msg);
-    printf("%s", spConfigIsExtractionMode(conf, msg) ? "true" : "false");
+    ASSERT_TRUE(*msg == SP_CONFIG_MISSING_DIR);
+    free(msg);
     return true;
 }
 
 int main() {
-    RUN_TEST(basicLoggerTest);
+    RUN_TEST(basicConfigTest);
     return 0;
 }

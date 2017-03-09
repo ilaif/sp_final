@@ -166,7 +166,7 @@ SP_CONFIG_MSG spConfigGetPCAPath(char *pcaPath, const SPConfig config);
 
 /**
  * Frees all memory resources associate with config. 
- * If config == NULL nothig is done.
+ * If config == NULL nothing is done.
  */
 void spConfigDestroy(SPConfig config);
 
