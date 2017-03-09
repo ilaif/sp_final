@@ -131,6 +131,29 @@ SP_LOGGER_MSG spLoggerPrintDebug(const char *msg, const char *file, const char *
     return res;
 }
 
+
+SP_LOGGER_MSG spLoggerPrintMsg(const char *msg) {
+    if (logger == NULL) {
+        return SP_LOGGER_UNDIFINED;
+    }
+    if (logger->level >= SP_LOGGER_INFO_WARNING_ERROR_LEVEL) {
+        int print_res = 0;
+        if (logger->isStdOut) {
+            printf("%s\n", msg);
+        } else {
+            print_res = fprintf(logger->outputChannel, "%s\n", msg);
+            if (print_res < 0) return SP_LOGGER_WRITE_FAIL;
+        }
+    }
+    return SP_LOGGER_SUCCESS;
+}
+
+void spRegularMessage(const char *msg, const char *file, const int line) {
+    printf("File: %s\n", file);
+    printf("Line: %d\n", line);
+    printf("Message: %s\n", msg);
+}
+
 void spLoggerDestroy() {
     if (!logger) {
         return;

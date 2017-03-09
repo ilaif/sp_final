@@ -199,8 +199,7 @@ SP_LOGGER_MSG spLoggerPrintInfo(const char *msg);
  * SP_LOGGER_WRITE_FAIL			- If Write failure occurred
  * SP_LOGGER_SUCCESS			- otherwise
  */
-SP_LOGGER_MSG spLoggerPrintDebug(const char *msg, const char *file,
-                                 const char *function, const int line);
+SP_LOGGER_MSG spLoggerPrintDebug(const char *msg, const char *file, const char *function, const int line);
 
 /**
  * The given message is printed. A new line is printed at the end of msg
@@ -214,5 +213,8 @@ SP_LOGGER_MSG spLoggerPrintDebug(const char *msg, const char *file,
  * SP_LOGGER_SUCCESS			- otherwise
  */
 SP_LOGGER_MSG spLoggerPrintMsg(const char *msg);
+
+//TODO: Doc
+void spRegularMessage(const char *msg, const char *file, const int line);
 
 #endif

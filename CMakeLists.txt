@@ -9,5 +9,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(SOURCE_FILES main.cpp SPLogger.h SPLogger.c SPConfig.h SPConfig.c)
 add_executable(final ${SOURCE_FILES})
 
-set(TEST_SOURCE_FILES sp_logger_unit_test.c SPLogger.h SPLogger.c SPConfig.h SPConfig.c)
-add_executable(unit_tests ${TEST_SOURCE_FILES})
+set(TEST_LOGGER sp_logger_unit_test.c SPLogger.h SPLogger.c)
+add_executable(test_logger ${TEST_LOGGER})
+
+set(TEST_CONFIG sp_config_unit_test.c SPLogger.h SPLogger.c SPConfig.h SPConfig.c)
+add_executable(test_config ${TEST_CONFIG})

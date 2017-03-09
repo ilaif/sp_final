@@ -2,7 +2,8 @@
 *.log
 log.txt
 SPCBIR
-SPCBIR_TESTS
+SPCBIR_LOGGER_TESTS
+SPCBIR_CONFIG_TESTS
 FinalProject.pdf
 .idea/
 cmake-build-debug/

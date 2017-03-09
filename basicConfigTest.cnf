@@ -1,0 +1,5 @@
+spExtractionMode  =   true
+  spNumOfImages=3
+  spImagesPrefix  =  test_pre
+spImagesDirectory=bla
+spImagesSuffix=.png
