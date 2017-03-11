@@ -82,7 +82,7 @@ SPKDArray *spKdArrayInit(SPPoint **arr, int size) {
     kd->data = (int *) malloc(sizeof(int) * kd->d * kd->n);
     kd->points = (SPPoint **) malloc(sizeof(*kd->points) * kd->n);
     for (i = 0; i < kd->n; i++) {
-        kd->points[i] = spPointCopy(arr[0]);
+        kd->points[i] = spPointCopy(arr[i]);
     }
 
     if (kd->data == NULL) {

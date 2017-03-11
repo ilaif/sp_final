@@ -14,7 +14,8 @@ int findHighestSpreadDimension(SPKDArray *kd_arr) {
     int max_spread_dim = 0;
 
     for (int d = 0; d < dims; d++) {
-        cur_spread = spPointGetAxisCoor(points[n - 1], d) - spPointGetAxisCoor(points[0], d);
+        cur_spread =
+                spPointGetAxisCoor(points[kd_arr->data[n - 1]], d) - spPointGetAxisCoor(points[kd_arr->data[0]], d);
         if (cur_spread >= max_spread) {
             max_spread = cur_spread;
             max_spread_dim = d;
