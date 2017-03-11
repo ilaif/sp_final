@@ -8,10 +8,16 @@
 static bool basicConfigTest() {
     SP_CONFIG_MSG *msg = (SP_CONFIG_MSG *) malloc(sizeof(msg));
     SPConfig conf = spConfigCreate("/Users/ilaif/uni/software-project/final/basicConfigTest.cnf", msg);
+    if (conf == NULL) {
+        free(msg);
+        return false;
+    }
     ASSERT_TRUE(*msg == SP_CONFIG_MISSING_DIR);
     free(msg);
     return true;
 }
+
+//TODO: Write more unit tests
 
 int main() {
     RUN_TEST(basicConfigTest);

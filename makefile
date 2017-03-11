@@ -2,7 +2,7 @@ CC = gcc
 CPP = g++
 # put all your object files here
 # TODO: SPImageProc.o
-OBJS = main.o SPLogger.o SPPoint.o
+OBJS = main.o main_aux.o SPConfig.o SPLogger.o SPPoint.o
 LOGGER_TEST_OBJS = sp_logger_unit_test.o SPLogger.o
 CONFIG_TEST_OBJS = sp_config_unit_test.o SPConfig.o SPLogger.o
 # The executabel filename
@@ -31,7 +31,9 @@ $(CONFIG_TEST_EXEC): $(CONFIG_TEST_OBJS)
 	$(CPP) $(CONFIG_TEST_OBJS) -L$(LIBPATH) $(LIBS) -o $@
 
 # Main
-main.o: main.cpp SPLogger.h
+main.o: main.cpp
+	$(CPP) $(CPP_COMP_FLAG) -I$(INCLUDEPATH) -c $*.cpp
+main_aux.o: main_aux.h main_aux.cpp
 	$(CPP) $(CPP_COMP_FLAG) -I$(INCLUDEPATH) -c $*.cpp
 SPImageProc.o: SPConfig.h SPImageProc.cpp SPImageProc.h SPPoint.h SPLogger.h
 	$(CPP) $(CPP_COMP_FLAG) -I$(INCLUDEPATH) -c $*.cpp

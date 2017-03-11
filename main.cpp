@@ -3,45 +3,85 @@
 extern "C" {
 #include "SPLogger.h"
 #include "SPConfig.h"
+#include "SPKDArray.h"
+#include "SPPoint.h"
+#include "SPKDTree.h"
 }
 
-#define INVALID_COMMAND_LINE "Invalid command line : use -c <config_filename>\n"
-#define DEFAULT_CONF_CANNOT_OPEN "The default configuration file spcbir.config couldn’t be open\n"
-#define CONF_CANNOT_OPEN "The configuration file %s couldn’t be open\n"
+#include "main_aux.h"
+
+#define ENTER_IMAGE_PATH "Please enter an image path:\n"
+#define EXITING "Exiting...\n"
+#define EXIT_CODE "<>"
 
 int main(int argc, char *argv[]) {
 
+    // Init config
     SP_CONFIG_MSG *msg = (SP_CONFIG_MSG *) malloc(sizeof(msg));
-    SPConfig conf = NULL;
-    if (argc < 3 || strcmp(argv[1], "-c") != 0) {
-        printf(INVALID_COMMAND_LINE);
-        // Default config file in case of a problem
-        conf = spConfigCreate("spcbir.config", msg);
-        if (*msg == SP_CONFIG_CANNOT_OPEN_FILE) {
-            printf(DEFAULT_CONF_CANNOT_OPEN);
+    SPConfig conf = loadConfig(argc, argv, msg);
+    if (*msg != SP_CONFIG_SUCCESS) {
+        return 1;
+    }
+
+    // Init logger
+    SP_LOGGER_MSG logger_msg = initLogger(conf);
+    if (logger_msg != SP_LOGGER_SUCCESS) {
+        return 1;
+    }
+
+    // TODO: TEST
+    int n = 5;
+    int d = 2;
+    SPPoint **p = (SPPoint **) malloc(sizeof(*p) * n);
+    double *data = (double *) malloc(sizeof(double) * d);
+    data[0] = 1;
+    data[1] = 2;
+    p[0] = spPointCreate(data, d, 0);
+    data[0] = 123;
+    data[1] = 70;
+    p[1] = spPointCreate(data, d, 0);
+    data[0] = 2;
+    data[1] = 7;
+    p[2] = spPointCreate(data, d, 0);
+    data[0] = 9;
+    data[1] = 11;
+    p[3] = spPointCreate(data, d, 0);
+    data[0] = 3;
+    data[1] = 4;
+    p[4] = spPointCreate(data, d, 0);
+    SPKDArray *arr = spKdArrayInit(p, n);
+    int i, j;
+    for (i = 0; i < d; i++) {
+        for (j = 0; j < n; j++) {
+            printf("%d, ", arr->data[i * n + j]);
         }
-    } else {
-        conf = spConfigCreate(argv[2], msg);
-        if (*msg == SP_CONFIG_CANNOT_OPEN_FILE) { // If cannot open file, then open the default one.
-            printf(CONF_CANNOT_OPEN, argv[2]);
-            conf = spConfigCreate("spcbir.config", msg);
-            if (*msg == SP_CONFIG_CANNOT_OPEN_FILE) {
-                printf(DEFAULT_CONF_CANNOT_OPEN);
-            }
+        printf("\n");
+    }
+    /*SPKDArray *left = {}, *right = {};
+    spKdArraySplit(arr, 0, &left, &right);*/
+
+    SPKDTree *t = spKdTreeBuild(arr, conf);
+
+    free(p);
+    free(data);
+    spKdArrayDestroy(arr);
+    spKdTreeDestroy(t);
+
+    char inp[BUF_SIZE];
+    while (true) {
+
+        printf(ENTER_IMAGE_PATH);
+
+        // Read input
+        scanf("%s", inp);
+
+        if (strcmp(inp, EXIT_CODE) == 0) {
+            printf(EXITING);
+            break;
         }
     }
 
-    //TODO:
-    /*SP_LOGGER_MSG lm = spLoggerCreate(, SP_LOGGER_DEBUG_INFO_WARNING_ERROR_LEVEL);
-
-    free(msg);
-
-    if (lm != SP_LOGGER_SUCCESS) {
-
-    }
-
-    spLoggerPrintInfo("Hey");*/
-
-
+    clearConfig(conf, msg);
+    clearLogger();
     return 0;
 }

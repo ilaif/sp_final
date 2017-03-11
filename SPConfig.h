@@ -5,6 +5,12 @@
 #include <stdio.h>
 #include "SPLogger.h"
 
+typedef enum sp_kd_tree_split_method {
+    RANDOM,
+    MAX_SPREAD,
+    INCREMENTAL
+} SP_KD_TREE_SPLIT_METHOD;
+
 /**
  * A data-structure which is used for configuring the system.
  */
@@ -163,6 +169,15 @@ SP_CONFIG_MSG spConfigGetImagePath(char *imagePath, const SPConfig config,
  *  - SP_CONFIG_SUCCESS - in case of success
  */
 SP_CONFIG_MSG spConfigGetPCAPath(char *pcaPath, const SPConfig config);
+
+//TODO: Docs
+SP_CONFIG_MSG spConfigGetLoggerLevel(SP_LOGGER_LEVEL *level, const SPConfig config);
+
+//TODO: Docs
+SP_CONFIG_MSG spConfigGetLoggerFilename(char *filename, const SPConfig config);
+
+//TODO: Docs
+SP_CONFIG_MSG spConfigGetTreeSplitMethod(SP_KD_TREE_SPLIT_METHOD *method, const SPConfig config);
 
 /**
  * Frees all memory resources associate with config. 

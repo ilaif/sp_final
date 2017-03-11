@@ -88,7 +88,7 @@ int spPointGetIndex(SPPoint* point);
  *
  * @param point - The source point
  * @param axis  - The coordinate of the point which
- * 				  its value will be retreived
+ * 				  its value will be retrieved
  * @assert point!=NULL && axis < dim(point)
  * @return
  * The value of the given coordinate (p_axis will be returned)

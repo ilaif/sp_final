@@ -70,8 +70,10 @@ static bool basicLoggerDebugTest() {
     return true;
 }
 
+//TODO: Write more unit tests?
+
 int main() {
-    RUN_TEST(basicConfigTest);
+    RUN_TEST(basicLoggerTest);
     RUN_TEST(basicLoggerErrorTest);
     RUN_TEST(basicLoggerDebugTest);
     return 0;

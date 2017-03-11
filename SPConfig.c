@@ -14,12 +14,6 @@
 #define INVALID_CONFIGURATION_LINE "Invalid configuration line"
 #define INVALID_VALUE "Invalid value - constraint not met"
 
-typedef enum sp_kd_tree_split_method {
-    RANDOM,
-    MAX_SPREAD,
-    INCREMENTAL
-} SP_KD_TREE_SPLIT_METHOD;
-
 // Global variable holding the logger
 SPConfig config = NULL;
 
@@ -377,6 +371,37 @@ SP_CONFIG_MSG spConfigGetPCAPath(char *pcaPath, const SPConfig config) {
     strcpy(pcaPath, config->spImagesDirectory);
     strcat(pcaPath, config->spPCAFilename);
 
+    return SP_CONFIG_SUCCESS;
+}
+
+SP_CONFIG_MSG spConfigGetLoggerLevel(SP_LOGGER_LEVEL *level, const SPConfig config) {
+    if (config == NULL)
+        return SP_CONFIG_INVALID_ARGUMENT;
+    switch (config->spLoggerLevel) {
+        case 1:
+            *level = SP_LOGGER_ERROR_LEVEL;
+        case 2:
+            *level = SP_LOGGER_WARNING_ERROR_LEVEL;
+        case 3:
+            *level = SP_LOGGER_INFO_WARNING_ERROR_LEVEL;
+        case 4:
+        default:
+            *level = SP_LOGGER_DEBUG_INFO_WARNING_ERROR_LEVEL;
+    }
+    return SP_CONFIG_SUCCESS;
+}
+
+SP_CONFIG_MSG spConfigGetLoggerFilename(char *filename, const SPConfig config) {
+    if (config == NULL)
+        return SP_CONFIG_INVALID_ARGUMENT;
+    strcpy(filename, config->spLoggerFilename);
+    return SP_CONFIG_SUCCESS;
+}
+
+SP_CONFIG_MSG spConfigGetTreeSplitMethod(SP_KD_TREE_SPLIT_METHOD *method, const SPConfig config) {
+    if (config == NULL)
+        return SP_CONFIG_INVALID_ARGUMENT;
+    *method = config->spKDTreeSplitMethod;
     return SP_CONFIG_SUCCESS;
 }
 
