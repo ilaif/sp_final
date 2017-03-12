@@ -25,8 +25,13 @@ int findHighestSpreadDimension(SPKDArray *kd_arr) {
     return max_spread_dim;
 }
 
+bool isLeaf(SPKDTree *node) {
+    return (node->left == NULL && node->right == NULL);
+}
+
 //TODO: Docs
 SPKDTree *buildTree(SPKDArray *kd_arr, SP_KD_TREE_SPLIT_METHOD method, int split_dim) {
+    int dim;
 
     SPKDTree *node = (SPKDTree *) malloc(sizeof(SPKDTree));
     node->left = NULL;
@@ -36,11 +41,10 @@ SPKDTree *buildTree(SPKDArray *kd_arr, SP_KD_TREE_SPLIT_METHOD method, int split
     if (spKdArraySize(kd_arr) == 1) {
         node->d = 0;
         node->val = 0;
-        node->data = spKdArrayGetPoints(kd_arr)[0];
+        node->data = spPointCopy(spKdArrayGetPoints(kd_arr)[0]);
         return node;
     }
 
-    int dim;
     if (method == RANDOM) {
         dim = rand() % spKdArrayDimension(kd_arr);
     } else if (method == MAX_SPREAD) {
@@ -67,7 +71,7 @@ SPKDTree *spKdTreeBuild(SPKDArray *kd_arr, const SPConfig conf) {
     return buildTree(kd_arr, method, 1);
 }
 
-void *spKdTreeDestroy(SPKDTree *t) {
+void spKdTreeDestroy(SPKDTree *t) {
     if (t->left == NULL && t->right == NULL) {
         // just free memory
     } else if (t->left == NULL) {
@@ -79,4 +83,27 @@ void *spKdTreeDestroy(SPKDTree *t) {
         spKdTreeDestroy(t->left);
     }
     free(t);
+}
+
+void spKdTreeKNNSearch(SPKDTree *cur, SPBPQueue *bpq, SPPoint *p) {
+    double dx, dx2;
+
+    if (cur == NULL) {
+        return;
+    }
+
+    if (isLeaf(cur)) {
+        spBPQueueEnqueue(bpq, spPointGetIndex(cur->data), spPointL2SquaredDistance(cur->data, p));
+        return;
+    }
+
+    dx = cur->val - spPointGetAxisCoor(p, cur->d);
+    dx2 = dx * dx;
+
+    spKdTreeKNNSearch(dx > 0 ? cur->left : cur->right, bpq, p);
+
+    //TODO: Check?
+    if (!spBPQueueIsFull(bpq) || dx2 < spBPQueueMaxValue(bpq)) {
+        spKdTreeKNNSearch(dx > 0 ? cur->right : cur->left, bpq, p);
+    }
 }

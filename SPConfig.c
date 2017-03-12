@@ -13,6 +13,7 @@
 // Defining text message:
 #define INVALID_CONFIGURATION_LINE "Invalid configuration line"
 #define INVALID_VALUE "Invalid value - constraint not met"
+#define FEATURE_SUFFIX ".feats"
 
 // Global variable holding the logger
 SPConfig config = NULL;
@@ -83,7 +84,7 @@ void initDefaults() {
     config->spExtractionMode = true;
     config->spMinimalGUI = false;
     config->spNumOfSimilarImages = 1;
-    config->spKNN = 1;
+    config->spKNN = 3;
     config->spKDTreeSplitMethod = MAX_SPREAD;
     config->spLoggerLevel = 3;
     strcpy(config->spLoggerFilename, "stdout");
@@ -403,6 +404,45 @@ SP_CONFIG_MSG spConfigGetTreeSplitMethod(SP_KD_TREE_SPLIT_METHOD *method, const 
         return SP_CONFIG_INVALID_ARGUMENT;
     *method = config->spKDTreeSplitMethod;
     return SP_CONFIG_SUCCESS;
+}
+
+SP_CONFIG_MSG spConfigGetFeaturePath(char *featurePath, const SPConfig config, int index) {
+    if (config == NULL || featurePath == NULL)
+        return SP_CONFIG_INVALID_ARGUMENT;
+    if (index >= config->spNumOfImages)
+        return SP_CONFIG_INVALID_ARGUMENT;
+
+    char str_index[10];
+
+    strcpy(featurePath, config->spImagesDirectory);
+    strcat(featurePath, config->spImagesPrefix);
+    sprintf(str_index, "%d", index);
+    strcat(featurePath, str_index);
+    strcat(featurePath, FEATURE_SUFFIX);
+
+    return SP_CONFIG_SUCCESS;
+}
+
+int spConfigGetNumOfSimilarImages(const SPConfig config, SP_CONFIG_MSG *msg) {
+    assert(msg != NULL);
+    if (config == NULL) {
+        *msg = SP_CONFIG_INVALID_ARGUMENT;
+        return -1;
+    } else {
+        *msg = SP_CONFIG_SUCCESS;
+        return config->spNumOfSimilarImages;
+    }
+}
+
+int spConfigGetKNN(const SPConfig config, SP_CONFIG_MSG *msg) {
+    assert(msg != NULL);
+    if (config == NULL) {
+        *msg = SP_CONFIG_INVALID_ARGUMENT;
+        return -1;
+    } else {
+        *msg = SP_CONFIG_SUCCESS;
+        return config->spKNN;
+    }
 }
 
 void spConfigDestroy(SPConfig config) {

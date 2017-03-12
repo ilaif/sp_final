@@ -179,6 +179,15 @@ SP_CONFIG_MSG spConfigGetLoggerFilename(char *filename, const SPConfig config);
 //TODO: Docs
 SP_CONFIG_MSG spConfigGetTreeSplitMethod(SP_KD_TREE_SPLIT_METHOD *method, const SPConfig config);
 
+//TODO: Docs
+SP_CONFIG_MSG spConfigGetFeaturePath(char *featurePath, const SPConfig config, int index);
+
+//TODO: Docs
+int spConfigGetNumOfSimilarImages(const SPConfig config, SP_CONFIG_MSG *msg);
+
+//TODO: Docs
+int spConfigGetKNN(const SPConfig config, SP_CONFIG_MSG *msg);
+
 /**
  * Frees all memory resources associate with config. 
  * If config == NULL nothing is done.
