@@ -57,8 +57,8 @@ SPKDTree *buildTree(SPKDArray *kd_arr, SP_KD_TREE_SPLIT_METHOD method, int split
     node->val = spKdArrayMedianByDim(kd_arr, dim);     //TODO: Test median!
     SPKDArray *left, *right;
     spKdArraySplit(kd_arr, node->d, &left, &right);
-    node->left = buildTree(left, method, dim + 1);
-    node->right = buildTree(right, method, dim + 1);
+    node->left = buildTree(left, method, (dim + 1) % spKdArrayDimension(kd_arr));
+    node->right = buildTree(right, method, (dim + 1) % spKdArrayDimension(kd_arr));
     node->data = NULL;
     return node;
 }
@@ -92,6 +92,8 @@ void spKdTreeKNNSearch(SPKDTree *cur, SPBPQueue *bpq, SPPoint *p) {
         return;
     }
 
+    /* Add the current point to the BPQ. Note that this is a no-op if the
+	* point is not as good as the points we've seen so far.*/
     if (isLeaf(cur)) {
         spBPQueueEnqueue(bpq, spPointGetIndex(cur->data), spPointL2SquaredDistance(cur->data, p));
         return;

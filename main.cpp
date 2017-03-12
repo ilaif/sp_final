@@ -125,7 +125,11 @@ int main(int argc, char *argv[]) {
     int image_knn_cou[num_images][2];
     res = (BPQueueElement *) malloc(sizeof(BPQueueElement));
 
-    // TODO: Still not working...
+    //Clear knn counts
+    for (i = 0; i < num_images; i++) {
+        image_knn_cou[i][0] = 0;
+        image_knn_cou[i][1] = i;
+    }
 
     while (true) {
 
@@ -178,6 +182,7 @@ int main(int argc, char *argv[]) {
     spKdTreeDestroy(t);
     free(res);
     //free(image_knn_cou);
+    free(all_features);
     free(images_features);
     free(images_features_num_of_features);
     clearConfig(conf, msg);

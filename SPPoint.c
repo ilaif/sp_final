@@ -74,19 +74,16 @@ void spPointDestroy(SPPoint* point) {
 
 int spPointGetDimension(SPPoint* point) {
     assert(point != NULL);
-    
     return point->dim;
 }
 
 int spPointGetIndex(SPPoint* point) {
     assert(point != NULL);
-    
     return point->index;
 }
 
 double spPointGetAxisCoor(SPPoint* point, int axis) {
     assert(point != NULL && axis < point->dim);
-    
     return point->data[axis];
 }
 

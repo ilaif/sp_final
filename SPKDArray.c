@@ -20,13 +20,17 @@ double spKdArrayMedianByDim(SPKDArray *kd_arr, int dim) {
     assert(kd_arr != NULL);
     int n = kd_arr->n;
     int median_i = dim * n + n / 2;
+    double p1, p2;
 
     if (n % 2 == 0) {
         // if there is an even number of elements, return mean of the two elements in the middle
-        return ((kd_arr->data[median_i] + kd_arr->data[median_i - 1]) / 2.0);
+        p1 = spPointGetAxisCoor(kd_arr->points[kd_arr->data[median_i]], dim);
+        p2 = spPointGetAxisCoor(kd_arr->points[kd_arr->data[median_i - 1]], dim);
+        return ((p1 + p2) / 2.0);
     } else {
         // else return the element in the middle
-        return kd_arr->data[median_i];
+        p1 = spPointGetAxisCoor(kd_arr->points[kd_arr->data[median_i]], dim);
+        return p1;
     }
 }
 
