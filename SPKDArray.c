@@ -81,15 +81,15 @@ SPKDArray *spKdArrayInit(SPPoint **arr, int size) {
         kd->points[d] = spPointCopy(arr[d]);
     }
 
-    int dim_arr[kd->n][2]; // TODO: should we malloc this?
+    int *dim_arr = (int *) malloc(sizeof(int) * kd->n * 2);
 
     // For every dimension
     for (d = 0; d < kd->d; d++) {
 
         // For every dimension point
         for (j = 0; j < kd->n; j++) {
-            dim_arr[j][0] = (int) spPointGetAxisCoor(arr[j], d);
-            dim_arr[j][1] = j;
+            dim_arr[j * 2 + 0] = (int) spPointGetAxisCoor(arr[j], d);
+            dim_arr[j * 2 + 1] = j;
         }
 
         // Sort the points over the current dimension d
@@ -97,10 +97,11 @@ SPKDArray *spKdArrayInit(SPPoint **arr, int size) {
 
         // Assign the sorted indices of the points over that dimension
         for (j = 0; j < kd->n; j++) {
-            kd->data[d * kd->n + j] = dim_arr[j][1];
+            kd->data[d * kd->n + j] = dim_arr[j * 2 + 1];
         }
     }
 
+    free(dim_arr);
     return kd;
 }
 

@@ -1,8 +1,7 @@
 CC = gcc
 CPP = g++
 # put all your object files here
-# TODO: SPImageProc.o
-OBJS = main.o main_aux.o SPConfig.o SPLogger.o SPPoint.o
+OBJS = main.o main_aux.o SPConfig.o SPLogger.o SPPoint.o SPBPriorityQueue.o SPKDArray.o SPKDTree.o SPImageProc.o
 LOGGER_TEST_OBJS = sp_logger_unit_test.o SPLogger.o
 CONFIG_TEST_OBJS = sp_config_unit_test.o SPConfig.o SPLogger.o
 # The executabel filename
@@ -43,7 +42,12 @@ SPLogger.o: SPLogger.c SPLogger.h
 	$(CC) $(C_COMP_FLAG) -c $*.c
 SPConfig.o: SPConfig.c SPConfig.h SPLogger.c SPLogger.h
 	$(CC) $(C_COMP_FLAG) -c $*.c
-
+SPBPriorityQueue.o: SPBPriorityQueue.c SPBPriorityQueue.h
+	$(CC) $(C_COMP_FLAG) -c $*.c
+SPKDArray.o: SPKDArray.c SPKDArray.h
+	$(CC) $(C_COMP_FLAG) -c $*.c
+SPKDTree.o: SPKDTree.c SPKDTree.h
+	$(CC) $(C_COMP_FLAG) -c $*.c
 
 # Tests
 sp_logger_unit_test.o: sp_logger_unit_test.c unit_test_util.h
