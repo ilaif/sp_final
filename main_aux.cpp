@@ -107,7 +107,7 @@ SPPoint **extractImageFeatures(SPConfig conf, int num_images, int *total_num_fea
     int *images_features_num_of_features; // Keep array of num of features per image
     SP_CONFIG_MSG *msg = (SP_CONFIG_MSG *) malloc(sizeof(msg));
     if (msg == NULL) return NULL;
-    char img_path[BUF_SIZE];
+    char file_path[BUF_SIZE], log_msg[BUF_SIZE];
 
     is_extract = spConfigIsExtractionMode(conf, msg);
     if (*msg != SP_CONFIG_SUCCESS) return NULL;
@@ -122,9 +122,9 @@ SPPoint **extractImageFeatures(SPConfig conf, int num_images, int *total_num_fea
     //TODO: What happens if not is_extract and there are no features
     if (is_extract) {
         for (i = 0; i < num_images; i++) {
-            *msg = spConfigGetImagePath(img_path, conf, i);
+            *msg = spConfigGetImagePath(file_path, conf, i);
             if (*msg != SP_CONFIG_SUCCESS) return NULL;
-            features = imp->getImageFeatures(img_path, i, &num_of_features);
+            features = imp->getImageFeatures(file_path, i, &num_of_features);
             if (features == NULL) return NULL;
             if (!saveImageFeaturesToFile(features, num_of_features, i, conf)) return NULL;
             *total_num_features += num_of_features;
@@ -134,7 +134,13 @@ SPPoint **extractImageFeatures(SPConfig conf, int num_images, int *total_num_fea
     } else {
         for (i = 0; i < num_images; i++) {
             images_features[i] = loadImageFeaturesFromFile(i, conf, &num_of_features);
-            if (images_features[i] == NULL) return NULL;
+            if (images_features[i] == NULL) {
+                *msg = spConfigGetFeaturePath(file_path, conf, i);
+                if (*msg != SP_CONFIG_SUCCESS) return NULL;
+                sprintf(log_msg, "Feature file %s not found.", file_path);
+                spLoggerPrintError(log_msg, __FILE__, __func__, __LINE__);
+                return NULL;
+            }
             images_features_num_of_features[i] = num_of_features;
             *total_num_features += num_of_features;
         }

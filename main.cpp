@@ -13,6 +13,7 @@ extern "C" {
 #define EXITING "Exiting...\n"
 #define EXIT_CODE "<>"
 #define BEST_CANDIDATES "Best candidates for - %s - are:\n"
+#define CANNOT_LOAD_IMAGE "Cannot load image, please verify the path exists to an image and try again.\n"
 
 using namespace sp;
 
@@ -80,6 +81,7 @@ int main(int argc, char *argv[]) {
         features = imp->getImageFeatures(inp, i, &num_of_features);
         // TODO: What to do here? (Waiting for forum q)
         if (features == NULL) { // If not found for some reason, continue
+            printf(CANNOT_LOAD_IMAGE);
             continue;
         }
 
@@ -118,6 +120,9 @@ int main(int argc, char *argv[]) {
     spKdArrayDestroy(kd_arr);
     spKdTreeDestroy(t);
     free(res);
+    for (i = 0; i < total_num_features; i++) {
+        spPointDestroy(all_features[i]);
+    }
     free(all_features);
     free(image_knn_cou);
     if (features != NULL) free(features);

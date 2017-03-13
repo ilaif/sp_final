@@ -19,8 +19,8 @@ int findHighestSpreadDimension(SPKDArray *kd_arr) {
     int max_spread_dim = 0;
 
     for (int d = 0; d < dim; d++) {
-        lowest_coor = spPointGetAxisCoor(points[kd_arr->data[0]], d);
-        highest_coor = spPointGetAxisCoor(points[kd_arr->data[n - 1]], d);
+        lowest_coor = spPointGetAxisCoor(points[kd_arr->data[d * n + 0]], d);
+        highest_coor = spPointGetAxisCoor(points[kd_arr->data[d * n + (n - 1)]], d);
         cur_spread = highest_coor - lowest_coor;
         if (cur_spread > max_spread) {
             max_spread = cur_spread;
@@ -62,7 +62,7 @@ SPKDTree *buildTree(SPKDArray *kd_arr, SP_KD_TREE_SPLIT_METHOD method, int split
     if (spKdArraySize(kd_arr) == 1) {
         node->d = 0;
         node->val = 0;
-        node->data = spPointCopy(spKdArrayGetPoints(kd_arr)[0]);
+        node->data = spKdArrayGetPoints(kd_arr)[0];
         return node;
     }
 

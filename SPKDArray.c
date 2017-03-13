@@ -60,7 +60,10 @@ void spKdArrayDestroy(SPKDArray *kd_arr) {
         return;
     }
     free(kd_arr->data);
-    free(kd_arr->points); // TODO: Correct?
+    for (int i = 0; i < kd_arr->n; i++) {
+        spPointDestroy(kd_arr->points[i]);
+    }
+    free(kd_arr->points);
     free(kd_arr);
 }
 
@@ -70,34 +73,34 @@ SPKDArray *spKdArrayInit(SPPoint **arr, int size) {
     if (kd == NULL) return NULL;
 
     int dim = spPointGetDimension(arr[0]);
-    int d, j;
+    int i, j;
     kd->n = size;
     kd->d = dim;
     kd->data = (int *) malloc(sizeof(int) * kd->d * kd->n);
     if (kd->data == NULL) return NULL;
     kd->points = (SPPoint **) malloc(sizeof(*kd->points) * kd->n);
     if (kd->points == NULL) return NULL;
-    for (d = 0; d < kd->n; d++) {
-        kd->points[d] = spPointCopy(arr[d]);
+    for (i = 0; i < kd->n; i++) {
+        kd->points[i] = arr[i];
     }
 
     int *dim_arr = (int *) malloc(sizeof(int) * kd->n * 2);
 
     // For every dimension
-    for (d = 0; d < kd->d; d++) {
+    for (i = 0; i < kd->d; i++) {
 
         // For every dimension point
         for (j = 0; j < kd->n; j++) {
-            dim_arr[j * 2 + 0] = (int) spPointGetAxisCoor(arr[j], d);
+            dim_arr[j * 2 + 0] = (int) spPointGetAxisCoor(arr[j], i);
             dim_arr[j * 2 + 1] = j;
         }
 
         // Sort the points over the current dimension d
-        qsort(dim_arr, (size_t) kd->n, sizeof(dim_arr[0]), sort);
+        qsort(dim_arr, (size_t) kd->n, sizeof(int) * 2, sort);
 
         // Assign the sorted indices of the points over that dimension
         for (j = 0; j < kd->n; j++) {
-            kd->data[d * kd->n + j] = dim_arr[j * 2 + 1];
+            kd->data[i * kd->n + j] = dim_arr[j * 2 + 1];
         }
     }
 
@@ -109,11 +112,11 @@ void spKdArraySplit(SPKDArray *kd_arr, int coor, SPKDArray **left, SPKDArray **r
     int n = kd_arr->n, dim = kd_arr->d;
     int X[n];
     int half_n = (n + 2 - 1) / 2;
-    int d, j;
+    int i, j;
 
     // Create the partition
-    for (d = 0; d < n; d++) {
-        X[kd_arr->data[coor * kd_arr->n + d]] = (d >= half_n) ? 1 : 0;
+    for (i = 0; i < n; i++) {
+        X[kd_arr->data[coor * kd_arr->n + i]] = (i >= half_n) ? 1 : 0;
     }
 
     // Create left and right point arrays and mappings
@@ -123,16 +126,16 @@ void spKdArraySplit(SPKDArray *kd_arr, int coor, SPKDArray **left, SPKDArray **r
     assert(p2 != NULL);
     int p1_j = 0, p2_j = 0;
     int map_1[n], map_2[n];
-    for (d = 0; d < n; d++) {
-        if (X[d] == 0) {
-            p1[p1_j] = spPointCopy(kd_arr->points[d]);
-            map_1[d] = p1_j;
-            map_2[d] = -1;
+    for (i = 0; i < n; i++) {
+        if (X[i] == 0) {
+            p1[p1_j] = kd_arr->points[i];
+            map_1[i] = p1_j;
+            map_2[i] = -1;
             p1_j++;
         } else {
-            p2[p2_j] = spPointCopy(kd_arr->points[d]);
-            map_2[d] = p2_j;
-            map_1[d] = -1;
+            p2[p2_j] = kd_arr->points[i];
+            map_2[i] = p2_j;
+            map_1[i] = -1;
             p2_j++;
         }
     }
@@ -153,16 +156,16 @@ void spKdArraySplit(SPKDArray *kd_arr, int coor, SPKDArray **left, SPKDArray **r
     (*right)->data = (int *) malloc(sizeof(int) * (*right)->d * (*right)->n);
     assert((*right)->data);
 
-    for (d = 0; d < dim; d++) {
+    for (i = 0; i < dim; i++) {
         p1_j = 0, p2_j = 0;
         for (j = 0; j < kd_arr->n; j++) {
 
             // Map the original indices to the split indices
-            if (map_1[kd_arr->data[d * kd_arr->n + j]] != -1) {
-                (*left)->data[d * (*left)->n + p1_j] = map_1[kd_arr->data[d * kd_arr->n + j]];
+            if (map_1[kd_arr->data[i * kd_arr->n + j]] != -1) {
+                (*left)->data[i * (*left)->n + p1_j] = map_1[kd_arr->data[i * kd_arr->n + j]];
                 p1_j++;
             } else {
-                (*right)->data[d * (*right)->n + p2_j] = map_2[kd_arr->data[d * kd_arr->n + j]];
+                (*right)->data[i * (*right)->n + p2_j] = map_2[kd_arr->data[i * kd_arr->n + j]];
                 p2_j++;
             }
         }
