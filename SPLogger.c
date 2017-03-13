@@ -15,6 +15,47 @@ struct sp_logger_t {
     SP_LOGGER_LEVEL level; //Indicates the level
 };
 
+// Private methods
+
+/**
+ * Helper function to print error, warning and info logs
+ * @param const char *level Level of the message to print
+ * @param const char *msg the actual message
+ * @param const char *file file name that the log was called from
+ * @param const char *function function that the log was called from
+ * @param const int line line that the log was called from
+ * @return SP_LOGGER_MSG:
+ * SP_LOGGER_WRITE_FAIL - If write to file fails
+ * SP_LOGGER_SUCCESS - Otherwise
+ */
+SP_LOGGER_MSG spLoggerPrintMessage(const char *level, const char *msg, const char *file,
+                                   const char *function, const int line) {
+    int res = 0;
+    if (logger->isStdOut) {
+        printf("---%s---\n", level);
+        printf("- file: %s\n", file);
+        printf("- function: %s\n", function);
+        printf("- line: %d\n", line);
+        printf("- message: %s\n", msg);
+    } else {
+        res = fprintf(logger->outputChannel, "---%s---\n", level);
+        if (!res) return SP_LOGGER_WRITE_FAIL;
+        res = fprintf(logger->outputChannel, "- file: %s\n", file);
+        if (!res) return SP_LOGGER_WRITE_FAIL;
+        res = fprintf(logger->outputChannel, "- function: %s\n", function);
+        if (!res) return SP_LOGGER_WRITE_FAIL;
+        res = fprintf(logger->outputChannel, "- line: %d\n", line);
+        if (!res) return SP_LOGGER_WRITE_FAIL;
+        res = fprintf(logger->outputChannel, "- message: %s\n", msg);
+        if (!res) return SP_LOGGER_WRITE_FAIL;
+        fflush(logger->outputChannel);
+    }
+
+    return SP_LOGGER_SUCCESS;
+}
+
+// Public header methods
+
 SP_LOGGER_MSG spLoggerCreate(const char *filename, SP_LOGGER_LEVEL level) {
     if (logger != NULL) { //Already defined
         return SP_LOGGER_DEFINED;
@@ -39,40 +80,6 @@ SP_LOGGER_MSG spLoggerCreate(const char *filename, SP_LOGGER_LEVEL level) {
     return SP_LOGGER_SUCCESS;
 }
 
-/**
- * Helper function to print error, warning and info logs
- * @param level
- * @param msg
- * @param file
- * @param function
- * @param line
- * @return
- */
-SP_LOGGER_MSG spLoggerPrintMessage(const char *level, const char *msg, const char *file,
-                                   const char *function, const int line) {
-    int res = 0;
-    if (logger->isStdOut) {
-        printf("---%s---\n", level);
-        printf("- file: %s\n", file);
-        printf("- function: %s\n", function);
-        printf("- line: %d\n", line);
-        printf("- message: %s\n", msg);
-    } else {
-        res = fprintf(logger->outputChannel, "---%s---\n", level);
-        if (!res) return SP_LOGGER_WRITE_FAIL;
-        res = fprintf(logger->outputChannel, "- file: %s\n", file);
-        if (!res) return SP_LOGGER_WRITE_FAIL;
-        res = fprintf(logger->outputChannel, "- function: %s\n", function);
-        if (!res) return SP_LOGGER_WRITE_FAIL;
-        res = fprintf(logger->outputChannel, "- line: %d\n", line);
-        if (!res) return SP_LOGGER_WRITE_FAIL;
-        res = fprintf(logger->outputChannel, "- message: %s\n", msg);
-        if (!res) return SP_LOGGER_WRITE_FAIL;
-    }
-
-    return SP_LOGGER_SUCCESS;
-}
-
 SP_LOGGER_MSG spLoggerPrintError(const char *msg, const char *file, const char *function, const int line) {
     if (logger == NULL) { //Already defined
         return SP_LOGGER_UNDIFINED;
@@ -90,7 +97,7 @@ SP_LOGGER_MSG spLoggerPrintWarning(const char *msg, const char *file, const char
     if (logger == NULL) { //Already defined
         return SP_LOGGER_UNDIFINED;
     }
-    SP_LOGGER_MSG res = SP_LOGGER_UNDIFINED;
+    SP_LOGGER_MSG res;
     if (logger->level >= SP_LOGGER_WARNING_ERROR_LEVEL) {
         res = spLoggerPrintMessage("WARNING", msg, file, function, line);
     } else {
@@ -113,6 +120,7 @@ SP_LOGGER_MSG spLoggerPrintInfo(const char *msg) {
             if (print_res < 0) return SP_LOGGER_WRITE_FAIL;
             print_res = fprintf(logger->outputChannel, "- message: %s\n", msg);
             if (print_res < 0) return SP_LOGGER_WRITE_FAIL;
+            fflush(logger->outputChannel);
         }
     }
     return SP_LOGGER_SUCCESS;

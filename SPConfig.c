@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <memory.h>
 #include <assert.h>
+#include <ctype.h>
 
 #include "SPConfig.h"
 #include "SPLogger.h"
@@ -38,17 +39,23 @@ struct sp_config_t {
 // Private Methods
 
 //TODO: Doc
-void removeSpaces(char *str) {
-    if (str == NULL)
-        return;
-    char *i = str;
-    char *j = str;
-    while (*j != 0) {
-        *i = *j++;
-        if (*i != ' ' && *i != '\n')
-            i++;
-    }
-    *i = 0;
+char *trimSpaces(char *str) {
+    char *end;
+
+    // Trim leading space
+    while (isspace((unsigned char) *str)) str++;
+
+    if (*str == 0) // All spaces?
+        return str;
+
+    // Trim trailing space (from end to first non whitespace)
+    end = str + strlen(str) - 1;
+    while (end > str && isspace((unsigned char) *end)) end--;
+
+    // Write new null terminator
+    *(end + 1) = 0;
+
+    return str;
 }
 
 //TODO: Doc
@@ -97,22 +104,32 @@ int loadConfigFromFile(FILE *f, const char *filename, SP_CONFIG_MSG *msg) {
     int i = 1;
 
     while (fgets(line, sizeof(line), f) != NULL) {
-        char *key;
-        char *val;
-        key = strtok(line, DELIM);
-        removeSpaces(key);
-        val = strtok(NULL, DELIM);
-        removeSpaces(val);
-        bool bool_val;
+        char *key = NULL, *val = NULL;
         int int_val;
+        bool bool_val;
         const char space = ' ';
 
-        //val = strstr((char *) line, DELIM) + strlen(DELIM);
-        //key = strstr((char *) line, DELIM);
+        key = strtok(line, DELIM);
+        key = trimSpaces(key);
 
         if (*key == '#') {  // If first char is # then it's a comment
-            // Do nothing
-        } else if (strcmp(key, "spExtractionMode") == 0) {
+            i++;
+            continue;
+        }
+
+        if (strchr(key, space) != NULL) {
+            *msg = SP_CONFIG_INVALID_STRING;
+            return i;
+        }
+
+        val = strtok(NULL, DELIM);
+        val = trimSpaces(val);
+        if (strchr(val, space) != NULL) {
+            *msg = SP_CONFIG_INVALID_STRING;
+            return i;
+        }
+
+        if (strcmp(key, "spExtractionMode") == 0) {
             bool_val = strToBool(val, msg);
             if (*msg != SP_CONFIG_SUCCESS) {
                 spRegularMessage(INVALID_VALUE, filename, i);
@@ -178,6 +195,7 @@ int loadConfigFromFile(FILE *f, const char *filename, SP_CONFIG_MSG *msg) {
         } else if (strcmp(key, "spNumOfImages") == 0) {
             int_val = strToInt(val, msg);
             if (*msg != SP_CONFIG_SUCCESS || int_val < 1) {
+                *msg = SP_CONFIG_INVALID_INTEGER;
                 spRegularMessage(INVALID_VALUE, filename, i);
                 return i;
             };
@@ -185,6 +203,7 @@ int loadConfigFromFile(FILE *f, const char *filename, SP_CONFIG_MSG *msg) {
         } else if (strcmp(key, "spPCADimension") == 0) {
             int_val = strToInt(val, msg);
             if (*msg != SP_CONFIG_SUCCESS || int_val < 10 || int_val > 28) {
+                *msg = SP_CONFIG_INVALID_INTEGER;
                 spRegularMessage(INVALID_VALUE, filename, i);
                 return i;
             };
@@ -192,6 +211,7 @@ int loadConfigFromFile(FILE *f, const char *filename, SP_CONFIG_MSG *msg) {
         } else if (strcmp(key, "spNumOfFeatures") == 0) {
             int_val = strToInt(val, msg);
             if (*msg != SP_CONFIG_SUCCESS || int_val < 1) {
+                *msg = SP_CONFIG_INVALID_INTEGER;
                 spRegularMessage(INVALID_VALUE, filename, i);
                 return i;
             };
@@ -199,6 +219,7 @@ int loadConfigFromFile(FILE *f, const char *filename, SP_CONFIG_MSG *msg) {
         } else if (strcmp(key, "spNumOfSimilarImages") == 0) {
             int_val = strToInt(val, msg);
             if (*msg != SP_CONFIG_SUCCESS || int_val < 1) {
+                *msg = SP_CONFIG_INVALID_INTEGER;
                 spRegularMessage(INVALID_VALUE, filename, i);
                 return i;
             };
@@ -206,6 +227,7 @@ int loadConfigFromFile(FILE *f, const char *filename, SP_CONFIG_MSG *msg) {
         } else if (strcmp(key, "spKNN") == 0) {
             int_val = strToInt(val, msg);
             if (*msg != SP_CONFIG_SUCCESS || int_val < 1) {
+                *msg = SP_CONFIG_INVALID_INTEGER;
                 spRegularMessage(INVALID_VALUE, filename, i);
                 return i;
             };
@@ -213,6 +235,7 @@ int loadConfigFromFile(FILE *f, const char *filename, SP_CONFIG_MSG *msg) {
         } else if (strcmp(key, "spLoggerLevel") == 0) {
             int_val = strToInt(val, msg);
             if (*msg != SP_CONFIG_SUCCESS || int_val < 1 || int_val > 4) {
+                *msg = SP_CONFIG_INVALID_INTEGER;
                 spRegularMessage(INVALID_VALUE, filename, i);
                 return i;
             };

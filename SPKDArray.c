@@ -5,6 +5,12 @@
 
 // Private methods
 
+/**
+ * Comparator function for and item which is a 2-d array that holds value in [0] and an index in [1].
+ * @param int[2] x
+ * @param int[2] y
+ * @return
+ */
 int sort(const void *x, const void *y) {
     const int *a = x;
     const int *b = y;
@@ -59,52 +65,39 @@ void spKdArrayDestroy(SPKDArray *kd_arr) {
 }
 
 SPKDArray *spKdArrayInit(SPPoint **arr, int size) {
-
-    if (arr == NULL) {
-        //TODO: Exception?
-        return NULL;
-    }
-
-    if (size == 0) {
-        //TODO: Exception?
-        return NULL;
-    }
-
+    if (arr == NULL || size == 0) return NULL;
     SPKDArray *kd = (SPKDArray *) malloc(sizeof(SPKDArray));
+    if (kd == NULL) return NULL;
 
-    if (kd == NULL) {
-        //TODO: Allocation failed
-        return NULL;
-    }
-
-    int d = spPointGetDimension(arr[0]);
-    int i, j;
-    //TODO: Do we need to check if the other points are also of dim d?
+    int dim = spPointGetDimension(arr[0]);
+    int d, j;
     kd->n = size;
-    kd->d = d;
+    kd->d = dim;
     kd->data = (int *) malloc(sizeof(int) * kd->d * kd->n);
+    if (kd->data == NULL) return NULL;
     kd->points = (SPPoint **) malloc(sizeof(*kd->points) * kd->n);
-    for (i = 0; i < kd->n; i++) {
-        kd->points[i] = spPointCopy(arr[i]);
-    }
-
-    if (kd->data == NULL) {
-        //TODO: Allocation failed
-        return NULL;
+    if (kd->points == NULL) return NULL;
+    for (d = 0; d < kd->n; d++) {
+        kd->points[d] = spPointCopy(arr[d]);
     }
 
     int dim_arr[kd->n][2]; // TODO: should we malloc this?
-    for (i = 0; i < kd->d; i++) {
 
+    // For every dimension
+    for (d = 0; d < kd->d; d++) {
+
+        // For every dimension point
         for (j = 0; j < kd->n; j++) {
-            dim_arr[j][0] = (int) spPointGetAxisCoor(arr[j], i);
+            dim_arr[j][0] = (int) spPointGetAxisCoor(arr[j], d);
             dim_arr[j][1] = j;
         }
 
+        // Sort the points over the current dimension d
         qsort(dim_arr, (size_t) kd->n, sizeof(dim_arr[0]), sort);
 
+        // Assign the sorted indices of the points over that dimension
         for (j = 0; j < kd->n; j++) {
-            kd->data[i * kd->n + j] = dim_arr[j][1];
+            kd->data[d * kd->n + j] = dim_arr[j][1];
         }
     }
 
@@ -112,95 +105,65 @@ SPKDArray *spKdArrayInit(SPPoint **arr, int size) {
 }
 
 void spKdArraySplit(SPKDArray *kd_arr, int coor, SPKDArray **left, SPKDArray **right) {
-    int n = kd_arr->n, d = kd_arr->d;
-    int x[n]; // TODO: should we malloc this?
+    int n = kd_arr->n, dim = kd_arr->d;
+    int X[n];
     int half_n = (n + 2 - 1) / 2;
-    int i, j;
+    int d, j;
 
     // Create the partition
-    for (i = 0; i < n; i++) {
-        x[kd_arr->data[coor * kd_arr->n + i]] = (i >= half_n) ? 1 : 0;
+    for (d = 0; d < n; d++) {
+        X[kd_arr->data[coor * kd_arr->n + d]] = (d >= half_n) ? 1 : 0;
     }
 
     // Create left and right point arrays and mappings
     SPPoint **p1 = (SPPoint **) malloc(sizeof(*p1) * half_n);
+    assert(p1 != NULL);
     SPPoint **p2 = (SPPoint **) malloc(sizeof(*p2) * (n - half_n));
+    assert(p2 != NULL);
     int p1_j = 0, p2_j = 0;
-    int map_1[n], map_2[n]; // TODO: Should malloc?
-    for (i = 0; i < n; i++) {
-        if (x[i] == 0) {
-            p1[p1_j] = spPointCopy(kd_arr->points[i]);
-            map_1[i] = p1_j;
-            map_2[i] = -1;
+    int map_1[n], map_2[n];
+    for (d = 0; d < n; d++) {
+        if (X[d] == 0) {
+            p1[p1_j] = spPointCopy(kd_arr->points[d]);
+            map_1[d] = p1_j;
+            map_2[d] = -1;
             p1_j++;
         } else {
-            p2[p2_j] = spPointCopy(kd_arr->points[i]);
-            map_2[i] = p2_j;
-            map_1[i] = -1;
+            p2[p2_j] = spPointCopy(kd_arr->points[d]);
+            map_2[d] = p2_j;
+            map_1[d] = -1;
             p2_j++;
         }
     }
 
     // Create left and right kd arrays
     *left = (SPKDArray *) malloc(sizeof(SPKDArray));
+    assert(left != NULL);
     *right = (SPKDArray *) malloc(sizeof(SPKDArray));
-    (*left)->d = d;
+    assert(right != NULL);
+    (*left)->d = dim;
     (*left)->n = half_n;
     (*left)->points = p1;
     (*left)->data = (int *) malloc(sizeof(int) * (*left)->d * (*left)->n);
-    (*right)->d = d;
+    assert((*left)->data);
+    (*right)->d = dim;
     (*right)->n = n - half_n;
     (*right)->points = p2;
     (*right)->data = (int *) malloc(sizeof(int) * (*right)->d * (*right)->n);
+    assert((*right)->data);
 
-    for (i = 0; i < d; i++) {
+    for (d = 0; d < dim; d++) {
         p1_j = 0, p2_j = 0;
         for (j = 0; j < kd_arr->n; j++) {
 
             // Map the original indices to the split indices
-            if (map_1[kd_arr->data[i * kd_arr->n + j]] != -1) {
-                (*left)->data[i * (*left)->n + p1_j] = map_1[kd_arr->data[i * kd_arr->n + j]];
+            if (map_1[kd_arr->data[d * kd_arr->n + j]] != -1) {
+                (*left)->data[d * (*left)->n + p1_j] = map_1[kd_arr->data[d * kd_arr->n + j]];
                 p1_j++;
             } else {
-                (*right)->data[i * (*right)->n + p2_j] = map_2[kd_arr->data[i * kd_arr->n + j]];
+                (*right)->data[d * (*right)->n + p2_j] = map_2[kd_arr->data[d * kd_arr->n + j]];
                 p2_j++;
             }
         }
     }
-
-    /*int dim = 0;
-
-    printf("\n---- X PARTITION\n");
-    for (i = 0; i < n; i++) {
-        printf(" %d , ", x[i]);
-    }
-    printf("\n---- ORIG KD ARRAY\n");
-    for (i = 0; i < n; i++) {
-        printf(" %d , ", kdArr->data[dim * kdArr->n + i]);
-    }
-    printf("\n---- LEFT POINTS \n");
-    for (i = 0; i < half_n; i++) {
-        printf(" %lf , ", spPointGetAxisCoor((*left)->points[i], dim));
-    }
-    printf("\n---- RIGHT POINTS \n");
-    for (i = 0; i < n - half_n; i++) {
-        printf(" %lf , ", spPointGetAxisCoor((*right)->points[i], dim));
-    }
-    printf("\n---- LEFT MAP\n");
-    for (i = 0; i < n; i++) {
-        printf("%d, ", map_1[i]);
-    }
-    printf("\n---- RIGHT MAP\n");
-    for (i = 0; i < n; i++) {
-        printf("%d, ", map_2[i]);
-    }
-    printf("\n---- LEFT INDICES\n");
-    for (i = 0; i < half_n; i++) {
-        printf("%d, ", (*left)->data[dim * (*left)->n + i]);
-    }
-    printf("\n---- RIGHT INDICES\n");
-    for (i = 0; i < n - half_n; i++) {
-        printf("%d, ", (*right)->data[dim * (*right)->n + i]);
-    }
-    printf("\n----\n");*/
 }
