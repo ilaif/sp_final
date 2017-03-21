@@ -117,6 +117,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    spKdArrayPointsDestroy(kd_arr);
     spKdArrayDestroy(kd_arr);
     spKdTreeDestroy(t);
     free(res);

@@ -30,6 +30,12 @@ int spKdArrayDimension(SPKDArray *kd_arr);
 SPPoint **spKdArrayGetPoints(SPKDArray *kd_arr);
 
 //TODO: Docs
+int spKdArrayGetDataIndex(SPKDArray *kd_arr, int d, int n);
+
+//TODO: Docs
 void spKdArrayDestroy(SPKDArray *kd_arr);
+
+//TODO: Docs
+void spKdArrayPointsDestroy(SPKDArray *kd_arr);
 
 #endif /* SPKDARRAY_H_ */
