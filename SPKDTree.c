@@ -3,8 +3,6 @@
 
 #include "SPKDTree.h"
 
-//TODO: Add asserts where needed
-
 // Private methods
 
 /**

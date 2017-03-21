@@ -25,5 +25,5 @@ add_executable(test_logger ${TEST_LOGGER})
 set(TEST_CONFIG sp_config_unit_test.c SPLogger.h SPLogger.c SPConfig.h SPConfig.c)
 add_executable(test_config ${TEST_CONFIG})
 
-set(TEST_KD_ARRAY ./unit_tests/sp_kd_array_unit_test.c SPKDArray.h SPKDArray.c SPPoint.h SPPoint.c)
+set(TEST_KD_ARRAY sp_kd_array_unit_test.c SPKDArray.h SPKDArray.c SPPoint.h SPPoint.c)
 add_executable(test_kd_array ${TEST_KD_ARRAY})

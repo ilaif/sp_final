@@ -81,7 +81,6 @@ int main(int argc, char *argv[]) {
 
         // Load query image features
         features = imp->getImageFeatures(inp, i, &num_of_features);
-        // TODO: What to do here? (Waiting for forum q)
         if (features == NULL) { // If not found for some reason, continue
             printf(CANNOT_LOAD_IMAGE);
             continue;
@@ -135,33 +134,3 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
-
-
-// TODO: TEST
-/*int n = 5;
-int d = 2;
-SPPoint **p = (SPPoint **) malloc(sizeof(*p) * n);
-double *data = (double *) malloc(sizeof(double) * d);
-data[0] = 1;
-data[1] = 2;
-p[0] = spPointCreate(data, d, 0);
-data[0] = 123;
-data[1] = 70;
-p[1] = spPointCreate(data, d, 0);
-data[0] = 2;
-data[1] = 7;
-p[2] = spPointCreate(data, d, 0);
-data[0] = 9;
-data[1] = 11;
-p[3] = spPointCreate(data, d, 0);
-data[0] = 3;
-data[1] = 4;
-p[4] = spPointCreate(data, d, 0);
-SPKDArray *arr = spKdArrayInit(p, n);
-SPKDArray *left = {}, *right = {};
-spKdArraySplit(arr, 0, &left, &right);
-SPKDTree *t = spKdTreeBuild(arr, conf);
-free(p);
-free(data);
-spKdArrayDestroy(arr);
-spKdTreeDestroy(t);*/

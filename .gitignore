@@ -4,7 +4,9 @@ log.txt
 SPCBIR
 SPCBIR_LOGGER_TESTS
 SPCBIR_CONFIG_TESTS
+SPCBIR_KD_ARRAY_TESTS
 FinalProject.pdf
 .idea/
 cmake-build-debug/
 images/
+*.dSYM/
