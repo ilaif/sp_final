@@ -170,22 +170,22 @@ SP_CONFIG_MSG spConfigGetImagePath(char *imagePath, const SPConfig config,
  */
 SP_CONFIG_MSG spConfigGetPCAPath(char *pcaPath, const SPConfig config);
 
-//TODO: Docs
+//Get an integer which indicates the active level of the logger
 SP_CONFIG_MSG spConfigGetLoggerLevel(SP_LOGGER_LEVEL *level, const SPConfig config);
 
-//TODO: Docs
+//Get the log file name
 SP_CONFIG_MSG spConfigGetLoggerFilename(char *filename, const SPConfig config);
 
-//TODO: Docs
+//Get a parameter which represents the cut method when the kd-tree is build.
 SP_CONFIG_MSG spConfigGetTreeSplitMethod(SP_KD_TREE_SPLIT_METHOD *method, const SPConfig config);
 
-//TODO: Docs
+//Create a full path of a feature
 SP_CONFIG_MSG spConfigGetFeaturePath(char *featurePath, const SPConfig config, int index);
 
-//TODO: Docs
+//Get a positive integer which indicates the number of similar images which will be presented given a query image.
 int spConfigGetNumOfSimilarImages(const SPConfig config, SP_CONFIG_MSG *msg);
 
-//TODO: Docs
+//Get a positive integer which is used in the k nearest neighbor search algorithm.
 int spConfigGetKNN(const SPConfig config, SP_CONFIG_MSG *msg);
 
 /**

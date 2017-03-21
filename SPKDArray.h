@@ -3,7 +3,7 @@
 
 #include "SPPoint.h"
 
-//TODO: Docs
+
 typedef struct sp_kd_array_t {
     int d;
     int n;
@@ -11,25 +11,27 @@ typedef struct sp_kd_array_t {
     SPPoint **points;
 } SPKDArray;
 
-//TODO: Docs
+/**Initializes the kd-array with the data given by arr**/
 SPKDArray *spKdArrayInit(SPPoint **arr, int size);
 
-//TODO: Docs
+/**Returns two kd-arrays (kdLeft, kdRight) such that
+// the first ⌈𝒏/𝟐⌉  points with respect to the coordinate coor are in kdLeft ,
+and the rest of the points are in kdRight.**/
 void spKdArraySplit(SPKDArray *kd_arr, int coor, SPKDArray **left, SPKDArray **right);
 
-//TODO: Docs
+/**returns the element in the middle of the spKdArray**/
 double spKdArrayMedianByDim(SPKDArray *kd_arr, int dim);
 
-//TODO: Docs
+/*return n member which refers to the size of the array*/
 int spKdArraySize(SPKDArray *kd_arr);
 
-//TODO: Docs
+/*return d member which refers to the dimension of the array*/
 int spKdArrayDimension(SPKDArray *kd_arr);
 
-//TODO: Docs
+/*returns the array of points*/
 SPPoint **spKdArrayGetPoints(SPKDArray *kd_arr);
 
-//TODO: Docs
+/*Deallocate spKdArray allocated memory*/
 void spKdArrayDestroy(SPKDArray *kd_arr);
 
 #endif /* SPKDARRAY_H_ */

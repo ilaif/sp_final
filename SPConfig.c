@@ -38,7 +38,7 @@ struct sp_config_t {
 
 // Private Methods
 
-//TODO: Doc
+//Removes leading and trailing spaces from a given string
 char *trimSpaces(char *str) {
     char *end;
 
@@ -58,7 +58,7 @@ char *trimSpaces(char *str) {
     return str;
 }
 
-//TODO: Doc
+//returns a boolean value based on a binary input
 bool strToBool(char *str, SP_CONFIG_MSG *msg) {
     *msg = SP_CONFIG_SUCCESS;
     if (strcmp(str, "true") == 0) {
@@ -70,7 +70,7 @@ bool strToBool(char *str, SP_CONFIG_MSG *msg) {
     return false;
 }
 
-//TODO: Doc
+//Parse string to an Integer value, returns -1 in case of failure
 int strToInt(char *str, SP_CONFIG_MSG *msg) {
     *msg = SP_CONFIG_SUCCESS;
     char *ptr;
@@ -83,7 +83,7 @@ int strToInt(char *str, SP_CONFIG_MSG *msg) {
     }
 }
 
-//TODO: Doc
+//Initialize default values for the config properties
 void initDefaults() {
     config->spPCADimension = 20;
     strcpy(config->spPCAFilename, "pca.yml");
@@ -97,7 +97,7 @@ void initDefaults() {
     strcpy(config->spLoggerFilename, "stdout");
 }
 
-//TODO: Doc
+//Sets the config values based on the input file content
 int loadConfigFromFile(FILE *f, const char *filename, SP_CONFIG_MSG *msg) {
     // Load config
     char line[MAXBUF];
@@ -252,6 +252,7 @@ int loadConfigFromFile(FILE *f, const char *filename, SP_CONFIG_MSG *msg) {
     return i;
 }
 
+//validate values of config and print to logger in the relevant message in case of failure or invalid setting
 void validateConfig(const char *filename, int num_lines, SP_CONFIG_MSG *msg) {
     if (strlen(config->spImagesDirectory) == 0) {
         *msg = SP_CONFIG_MISSING_DIR;

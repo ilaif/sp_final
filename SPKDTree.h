@@ -17,13 +17,18 @@ typedef struct sp_kd_tree_t {
     SPPoint *data; // Point (if a leaf)
 } SPKDTree;
 
-//TODO: Docs
+//Build the tree by a specific method, adding the nodes recursively while each node contains
+// 1- Dim = The splitting dimension
+// 2- Val = The median value of the splitting dimension
+// 3- Left = Pointer to the left subtree
+// 4- Right = Pointer to the right subtree
+// 5- Data = Pointer to a point (only if the current node is a leaf) otherwise this field value is NULL
 SPKDTree *spKdTreeBuild(SPKDArray *kd_arr, const SPConfig conf);
 
-//TODO:
+//Free all memory allocation associated with spKdTree
 void spKdTreeDestroy(SPKDTree *t);
 
-//TODO:
+//Recursive k nearest neighbor search algorithm
 void spKdTreeKNNSearch(SPKDTree *cur, SPBPQueue *bpq, SPPoint *p);
 
 #endif /* SPKDTREE_H_ */

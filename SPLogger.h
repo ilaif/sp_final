@@ -214,7 +214,7 @@ SP_LOGGER_MSG spLoggerPrintDebug(const char *msg, const char *file, const char *
  */
 SP_LOGGER_MSG spLoggerPrintMsg(const char *msg);
 
-//TODO: Doc
+// Regular Message will be printed to stdout. consisting of a File name, Line and the actual message
 void spRegularMessage(const char *msg, const char *file, const int line);
 
 #endif
