@@ -12,12 +12,12 @@
  * @return
  */
 int sort(const void *x, const void *y) {
-    const int *a = x;
-    const int *b = y;
+    const double *a = x;
+    const double *b = y;
     if (a[0] == b[0])
-        return a[1] - b[1];
+        return (int) (a[1] - b[1]);
     else
-        return a[0] - b[0];
+        return (int) (a[0] - b[0]);
 }
 
 // Public header methods
@@ -55,16 +55,25 @@ SPPoint **spKdArrayGetPoints(SPKDArray *kd_arr) {
     return kd_arr->points;
 }
 
+int spKdArrayGetDataIndex(SPKDArray *kd_arr, int d, int n) {
+    assert(kd_arr != NULL);
+    assert(d < kd_arr->d && n < kd_arr->n);
+    return kd_arr->data[d * kd_arr->n + n];
+}
+
 void spKdArrayDestroy(SPKDArray *kd_arr) {
     if (kd_arr == NULL) {
         return;
     }
     free(kd_arr->data);
+    free(kd_arr->points);
+    free(kd_arr);
+}
+
+void spKdArrayPointsDestroy(SPKDArray *kd_arr) {
     for (int i = 0; i < kd_arr->n; i++) {
         spPointDestroy(kd_arr->points[i]);
     }
-    free(kd_arr->points);
-    free(kd_arr);
 }
 
 SPKDArray *spKdArrayInit(SPPoint **arr, int size) {
@@ -84,23 +93,23 @@ SPKDArray *spKdArrayInit(SPPoint **arr, int size) {
         kd->points[i] = arr[i];
     }
 
-    int *dim_arr = (int *) malloc(sizeof(int) * kd->n * 2);
+    double *dim_arr = (double *) malloc(sizeof(double) * kd->n * 2);
 
     // For every dimension
     for (i = 0; i < kd->d; i++) {
 
         // For every dimension point
         for (j = 0; j < kd->n; j++) {
-            dim_arr[j * 2 + 0] = (int) spPointGetAxisCoor(arr[j], i);
-            dim_arr[j * 2 + 1] = j;
+            dim_arr[j * 2 + 0] = spPointGetAxisCoor(arr[j], i);
+            dim_arr[j * 2 + 1] = (double) j;
         }
 
         // Sort the points over the current dimension d
-        qsort(dim_arr, (size_t) kd->n, sizeof(int) * 2, sort);
+        qsort(dim_arr, (size_t) kd->n, sizeof(double) * 2, sort);
 
         // Assign the sorted indices of the points over that dimension
         for (j = 0; j < kd->n; j++) {
-            kd->data[i * kd->n + j] = dim_arr[j * 2 + 1];
+            kd->data[i * kd->n + j] = (int) dim_arr[j * 2 + 1];
         }
     }
 

@@ -80,6 +80,7 @@ SPKDTree *buildTree(SPKDArray *kd_arr, SP_KD_TREE_SPLIT_METHOD method, int split
     spKdArraySplit(kd_arr, node->d, &left, &right);
     node->left = buildTree(left, method, (dim + 1) % spKdArrayDimension(kd_arr));
     node->right = buildTree(right, method, (dim + 1) % spKdArrayDimension(kd_arr));
+    spKdArrayDestroy(kd_arr);
     node->data = NULL;
     return node;
 }

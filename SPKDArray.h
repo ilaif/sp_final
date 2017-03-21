@@ -31,7 +31,13 @@ int spKdArrayDimension(SPKDArray *kd_arr);
 /*returns the array of points*/
 SPPoint **spKdArrayGetPoints(SPKDArray *kd_arr);
 
+//TODO: Docs
+int spKdArrayGetDataIndex(SPKDArray *kd_arr, int d, int n);
+
 /*Deallocate spKdArray allocated memory*/
 void spKdArrayDestroy(SPKDArray *kd_arr);
+
+//TODO: Docs
+void spKdArrayPointsDestroy(SPKDArray *kd_arr);
 
 #endif /* SPKDARRAY_H_ */
