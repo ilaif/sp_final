@@ -11,13 +11,26 @@ typedef struct sp_kd_array_t {
     SPPoint **points;
 } SPKDArray;
 
-/**Initializes the kd-array with the data given by arr**/
+/**
+ * Initializes the kd-array with the data given by arr
+ * @param arr
+ * @param size
+ * @return initialized kd-array
+ */
 SPKDArray *spKdArrayInit(SPPoint **arr, int size);
 
 /**Returns two kd-arrays (kdLeft, kdRight) such that
 // the first ⌈𝒏/𝟐⌉  points with respect to the coordinate coor are in kdLeft ,
 and the rest of the points are in kdRight.**/
-void spKdArraySplit(SPKDArray *kd_arr, int coor, SPKDArray **left, SPKDArray **right);
+/**
+ *
+ * @param kd_arr
+ * @param coor
+ * @param left
+ * @param right
+ */
+
+ void spKdArraySplit(SPKDArray *kd_arr, int coor, SPKDArray **left, SPKDArray **right);
 
 /**returns the element in the middle of the spKdArray**/
 double spKdArrayMedianByDim(SPKDArray *kd_arr, int dim);
@@ -34,7 +47,10 @@ SPPoint **spKdArrayGetPoints(SPKDArray *kd_arr);
 //TODO: Docs
 int spKdArrayGetDataIndex(SPKDArray *kd_arr, int d, int n);
 
-/*Deallocate spKdArray allocated memory*/
+/**
+ * Deallocate spKdArray allocated memory
+ * @param kd_arr
+ */
 void spKdArrayDestroy(SPKDArray *kd_arr);
 
 //TODO: Docs

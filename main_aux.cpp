@@ -4,7 +4,7 @@
 #include "main_aux.h"
 
 #define INVALID_COMMAND_LINE "Invalid command line : use -c <config_filename>\n"
-#define DEFAULT_CONF_CANNOT_OPEN "The default configuration file spcbir.config couldn’t be open\n"
+#define DEFAULT_CONF_CANNOT_OPEN "The default configuration file spcbir.config couldn't be open\n"
 #define CONF_CANNOT_OPEN "The configuration file %s couldn’t be open\n"
 #define DEFAULT_CONFIG_PATH "./spcbir.config"
 
