@@ -1,0 +1,26 @@
+CC = gcc
+CPP = g++
+INCLUDEPATH=/usr/local/opt/opencv3/include/
+LIBPATH=/usr/local/opt/opencv3/lib/
+LIBS=-lopencv_xfeatures2d -lopencv_features2d \
+-lopencv_highgui -lopencv_imgcodecs -lopencv_imgproc -lopencv_core
+CPP_COMP_FLAG = -std=c++11 -Wall -Wextra \
+-Werror -pedantic-errors -DNDEBUG
+C_COMP_FLAG = -std=c99 -Wall -Wextra \
+-Werror -pedantic-errors -DNDEBUG
+
+KD_ARRAY_TEST_EXEC = SPCBIR_KD_ARRAY_TESTS
+all: $(KD_ARRAY_TEST_EXEC)
+
+KD_ARRAY_TEST_OBJS = sp_kd_array_unit_test.o SPKDArray.o
+$(KD_ARRAY_TEST_EXEC): $(KD_ARRAY_TEST_OBJS)
+	$(CPP) $(KD_ARRAY_TEST_OBJS) -L$(LIBPATH) $(LIBS) -o $@
+
+SPKDArray.o: ../SPKDArray.c ../SPKDArray.h
+	$(CC) $(C_COMP_FLAG) -c $*.c
+
+sp_logger_unit_test.o: sp_kd_array_unit_test.c ../SPKDArray.h
+	$(CC) $(C_COMP_FLAG) -c $*.c
+
+clean:
+	rm -f $(KD_ARRAY_TEST_OBJS) $(KD_ARRAY_TEST_EXEC)
