@@ -91,7 +91,7 @@ void initDefaults() {
     config->spExtractionMode = true;
     config->spMinimalGUI = false;
     config->spNumOfSimilarImages = 1;
-    config->spKNN = 3;
+    config->spKNN = 1;
     config->spKDTreeSplitMethod = MAX_SPREAD;
     config->spLoggerLevel = 3;
     strcpy(config->spLoggerFilename, "stdout");

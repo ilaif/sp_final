@@ -168,7 +168,7 @@ int reversed_compare(const void *x, const void *y) {
     const int *a = (const int *) x;
     const int *b = (const int *) y;
     if (a[0] == b[0])
-        return b[1] - a[1];
+        return a[1] - b[1];
     else
         return b[0] - a[0];
 }
