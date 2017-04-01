@@ -85,12 +85,22 @@ SPKDTree *buildTree(SPKDArray *kd_arr, SP_KD_TREE_SPLIT_METHOD method, int split
 
 // Public header methods
 
+/**
+ * First Gets the wanted method, then call BuildTree
+ * @param kd_arr
+ * @param conf
+ * @return SPKDTree
+ */
 SPKDTree *spKdTreeBuild(SPKDArray *kd_arr, const SPConfig conf) {
     SP_KD_TREE_SPLIT_METHOD method;
     spConfigGetTreeSplitMethod(&method, conf);
     return buildTree(kd_arr, method, 1);
 }
 
+/**
+ *
+ * @param t
+ */
 void spKdTreeDestroy(SPKDTree *t) {
     if (t->left == NULL && t->right == NULL) {
         // just free memory
