@@ -7,7 +7,7 @@
 
 /**
  * Finds dimension with maximum spread between maximum and minimum points
- * @param SPKDArray kd_arr to find in
+ * @param SPKDArray kd_arr to do the search on
  * @return dimension with maximum spread
  */
 int findHighestSpreadDimension(SPKDArray *kd_arr) {
@@ -32,7 +32,7 @@ int findHighestSpreadDimension(SPKDArray *kd_arr) {
 /**
  * Helper function to check if a SPKDTree is a leaf by checking that it has not children
  * @param SPKDTree node
- * @return
+ * @return boolean value of Is leaf node
  */
 bool isLeaf(SPKDTree *node) {
     return (node->left == NULL && node->right == NULL);
@@ -46,7 +46,7 @@ bool isLeaf(SPKDTree *node) {
  * MAX_SPREAD - Picks the dimension with the highest spread
  * INCREMENTAL - Increments dimension in every level module maximum dimension
  * @param int split_dim current dimension to split by (In case of INCREMENTAL only)
- * @return
+ * @return KDTree
  */
 SPKDTree *buildTree(SPKDArray *kd_arr, SP_KD_TREE_SPLIT_METHOD method, int split_dim) {
     int dim;
@@ -99,7 +99,7 @@ SPKDTree *spKdTreeBuild(SPKDArray *kd_arr, const SPConfig conf) {
 
 /**
  *
- * @param t
+ * @param t for deallocation
  */
 void spKdTreeDestroy(SPKDTree *t) {
     if (t->left == NULL && t->right == NULL) {
@@ -115,6 +115,12 @@ void spKdTreeDestroy(SPKDTree *t) {
     free(t);
 }
 
+/**
+ *
+ * @param cur the tree to search in
+ * @param bpq for enqueue the KNN
+ * @param p the point we want to search
+ */
 void spKdTreeKNNSearch(SPKDTree *cur, SPBPQueue *bpq, SPPoint *p) {
     double dx, dx2;
 

@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "unit_test_util.h"
-#include "SPKDArray.h"
-#include "SPPoint.h"
+#include "../SPKDArray.h"
+#include "../SPPoint.h"
 
 /**
  * Tests that building an array returns sorted indices per dimension correctly.
@@ -42,6 +42,7 @@ static bool testKdArrayOrder() {
     ASSERT_TRUE(spKdArrayGetDataIndex(a, 2, 0) == 2);
     ASSERT_TRUE(spKdArrayGetDataIndex(a, 2, 1) == 0);
     ASSERT_TRUE(spKdArrayGetDataIndex(a, 2, 2) == 1);
+
 
     free(arr);
     free(d1);
