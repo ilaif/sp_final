@@ -8,5 +8,7 @@ SPCBIR_KD_ARRAY_TESTS
 FinalProject.pdf
 .idea/
 cmake-build-debug/
-images/
 *.dSYM/
+*.feats
+pca.yml
+images/images_profile

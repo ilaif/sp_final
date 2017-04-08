@@ -4,8 +4,7 @@ CPP = g++
 # The executabel filename
 INCLUDEPATH=/usr/local/opt/opencv3/include/
 LIBPATH=/usr/local/opt/opencv3/lib/
-LIBS=-lopencv_xfeatures2d -lopencv_features2d \
--lopencv_highgui -lopencv_imgcodecs -lopencv_imgproc -lopencv_core
+LIBS=-lopencv_xfeatures2d -lopencv_features2d -lopencv_highgui -lopencv_imgcodecs -lopencv_imgproc -lopencv_core
 
 
 CPP_COMP_FLAG = -std=c++11 -Wall -Wextra \
