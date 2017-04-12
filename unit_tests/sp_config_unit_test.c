@@ -1,8 +1,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "unit_test_util.h" //SUPPORTING MACROS ASSERT_TRUE/ASSERT_FALSE etc..
-#include "SPConfig.h"
+#include "unit_test_util.h"
+#include "../SPConfig.h"
 
 //Logger is not defined
 static bool basicConfigTest() {

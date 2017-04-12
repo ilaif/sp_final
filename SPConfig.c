@@ -119,6 +119,7 @@ int loadConfigFromFile(FILE *f, const char *filename, SP_CONFIG_MSG *msg) {
 
         if (strchr(key, space) != NULL) {
             *msg = SP_CONFIG_INVALID_STRING;
+            spRegularMessage(INVALID_VALUE, filename, i);
             return i;
         }
 
@@ -126,6 +127,7 @@ int loadConfigFromFile(FILE *f, const char *filename, SP_CONFIG_MSG *msg) {
         val = trimSpaces(val);
         if (strchr(val, space) != NULL) {
             *msg = SP_CONFIG_INVALID_STRING;
+            spRegularMessage(INVALID_VALUE, filename, i);
             return i;
         }
 
