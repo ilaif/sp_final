@@ -2,21 +2,12 @@
 // Created by Noa Biton on 3/27/2017.
 //
 
-
-//#include <stdbool.h>
-//#include <stdlib.h>
-//#include <stdio.h>
-//#include "unit_test_util.h"
-//#include "../SPKDArray.h"
-//
-
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "unit_test_util.h"
-#include "../SPKDArray.h"
-#include "../SPPoint.c"
 #include "../SPKDTree.c"
+#include "../SPPoint.c"
 
 
 static SPKDArray* createArr(){
@@ -108,7 +99,20 @@ static bool testBuildTree(){
     ASSERT_TRUE(point->data[1] == 8 );
     ASSERT_TRUE(point->data[2] == 4 );
 
+    SP_KD_TREE_SPLIT_METHOD method2 = INCREMENTAL;
 
+    SPKDTree *tree2 = buildTree(a,method2,1);
+    ASSERT_TRUE(tree->left->right->data != NULL);
+    SPPoint *point2 = tree->left->right->data;
+
+    ASSERT_TRUE(point2->data[0] == 3 );
+    ASSERT_TRUE(point2->data[1] == 2 );
+    ASSERT_TRUE(point2->data[2] == 1 );
+
+    free(tree);
+    free(tree2);
+    free(point);
+    free(point2);
 }
 
 
@@ -123,7 +127,6 @@ static bool testFindHighestSpreadDimension(){
     free(b);
 
 }
-
 
 static bool testIsLeaf(){
 
@@ -141,11 +144,6 @@ static bool testIsLeaf(){
     return true;
 }
 
-
-
-
-
-
 static bool testSpKdTreeDestroy(){
     SPKDTree *t = (SPKDTree *) malloc(sizeof(SPKDTree));
     spKdTreeDestroy(t);
@@ -154,20 +152,34 @@ static bool testSpKdTreeDestroy(){
 
 static bool testSpKdTreeKNNSearch(){
     SPKDArray *b = createBigArr();
-    SPBPQueue *bpq;
+    SPBPQueue *bpq = spBPQueueCreate(3);
     SP_KD_TREE_SPLIT_METHOD method = MAX_SPREAD;
-    double data_test[3] = {-1.0,2.0,4.0};
+    double data_test[3] = {-1.0, 2.0 , 4.0};
     int dim_test = 2;
     int index_test = 1;
     SPPoint* point = spPointCreate((double *) data_test, dim_test, index_test);
-    SPKDTree *tree = buildTree(b,method,1);
+    SPKDTree *tree = buildTree(b, method, 1);
     spKdTreeKNNSearch(tree, bpq , point);
     ASSERT_TRUE(spBPQueueIsFull(bpq));
+    BPQueueElement* currentSourceElement = (BPQueueElement*) malloc(sizeof(BPQueueElement));
+    bool compareRes;
+    spBPQueuePeek(bpq, currentSourceElement);
+    spBPQueueDequeue(bpq);
+    ASSERT_TRUE(currentSourceElement->value == 25 );
+    spBPQueuePeek(bpq, currentSourceElement);
+    spBPQueueDequeue(bpq);
+    ASSERT_TRUE(currentSourceElement->value == 43 );
+    spBPQueuePeek(bpq, currentSourceElement);
+    spBPQueueDequeue(bpq);
+    ASSERT_TRUE(currentSourceElement->value == 53 );
 }
 
 
 int main() {
     RUN_TEST(testBuildTree);
     RUN_TEST(testSpKdTreeKNNSearch);
+    RUN_TEST(testFindHighestSpreadDimension);
+    RUN_TEST(testIsLeaf);
+    RUN_TEST(testSpKdTreeDestroy);
     return 0;
 }
