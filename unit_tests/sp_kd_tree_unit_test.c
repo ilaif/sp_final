@@ -19,9 +19,6 @@
 #include "../SPKDTree.c"
 
 
-
-
-
 static SPKDArray* createArr(){
     //int d = 3, n = 8
     int d = 3, n = 3;
