@@ -44,8 +44,8 @@ static bool basicLoggerTest() {
 
 //Only Errors should be printed
 static bool basicLoggerErrorTest() {
-    const char *expectedFile = "C:/Users/Noa Biton/Desktop/pro/sp_final/unit_tests/basicLoggerErrorTestExp.log";
-    const char *testFile = "C:/Users/Noa Biton/Desktop/pro/sp_final/unit_tests/basicLoggerErrorTest.log";
+    const char *expectedFile = "basicLoggerErrorTestExp.log";
+    const char *testFile = "basicLoggerErrorTest.log";
     ASSERT_TRUE(spLoggerCreate(testFile, SP_LOGGER_ERROR_LEVEL) == SP_LOGGER_SUCCESS);
     ASSERT_TRUE(spLoggerPrintError("MSGA", "sp_logger_unit_test.c", __func__, __LINE__) == SP_LOGGER_SUCCESS);
     ASSERT_TRUE(spLoggerPrintWarning("MSGB", "sp_logger_unit_test.c", __func__, __LINE__) == SP_LOGGER_SUCCESS);
@@ -58,8 +58,8 @@ static bool basicLoggerErrorTest() {
 
 //All messages should be printed in debug level
 static bool basicLoggerDebugTest() {
-    const char *expectedFile = "basicLoggerDebugTestExp.log";
-    const char *testFile = "basicLoggerDebugTest.log";
+    const char *expectedFile = "C:/Users/Noa Biton/Desktop/pro/sp_final/unit_tests/basicLoggerDebugTestExp.log";
+    const char *testFile = "C:/Users/Noa Biton/Desktop/pro/sp_final/unit_tests/basicLoggerDebugTest.log";
     ASSERT_TRUE(spLoggerCreate(testFile, SP_LOGGER_DEBUG_INFO_WARNING_ERROR_LEVEL) == SP_LOGGER_SUCCESS);
     ASSERT_TRUE(spLoggerPrintError("MSGA", "sp_logger_unit_test.c", __func__, __LINE__) == SP_LOGGER_SUCCESS);
     ASSERT_TRUE(spLoggerPrintWarning("MSGB", "sp_logger_unit_test.c", __func__, __LINE__) == SP_LOGGER_SUCCESS);

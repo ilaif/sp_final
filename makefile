@@ -4,9 +4,7 @@ CPP = g++
 # The executabel filename
 INCLUDEPATH=/usr/local/opt/opencv3/include/
 LIBPATH=/usr/local/opt/opencv3/lib/
-LIBS=-lopencv_xfeatures2d -lopencv_features2d \
--lopencv_highgui -lopencv_imgcodecs -lopencv_imgproc -lopencv_core
-
+LIBS=-lopencv_xfeatures2d -lopencv_features2d -lopencv_highgui -lopencv_imgcodecs -lopencv_imgproc -lopencv_core
 
 CPP_COMP_FLAG = -std=c++11 -Wall -Wextra \
 -Werror -pedantic-errors -DNDEBUG
@@ -15,21 +13,21 @@ C_COMP_FLAG = -std=c99 -Wall -Wextra \
 -Werror -pedantic-errors -DNDEBUG
 
 EXEC = SPCBIR
-LOGGER_TEST_EXEC = SPCBIR_LOGGER_TESTS
-CONFIG_TEST_EXEC = SPCBIR_CONFIG_TESTS
-KD_ARRAY_TEST_EXEC = SPCBIR_KD_ARRAY_TESTS
+LOGGER_TEST_EXEC = unit_tests/SPCBIR_LOGGER_TESTS
+CONFIG_TEST_EXEC = unit_tests/SPCBIR_CONFIG_TESTS
+KD_ARRAY_TEST_EXEC = unit_tests/SPCBIR_KD_ARRAY_TESTS
 all: $(EXEC) $(LOGGER_TEST_EXEC) $(CONFIG_TEST_EXEC) $(KD_ARRAY_TEST_EXEC)
 
 OBJS = main.o main_aux.o SPConfig.o SPLogger.o SPPoint.o SPBPriorityQueue.o SPKDArray.o SPKDTree.o SPImageProc.o
 $(EXEC): $(OBJS)
 	$(CPP) $(OBJS) -L$(LIBPATH) $(LIBS) -o $@
-LOGGER_TEST_OBJS = sp_logger_unit_test.o SPLogger.o
+LOGGER_TEST_OBJS = unit_tests/sp_logger_unit_test.o SPLogger.o
 $(LOGGER_TEST_EXEC): $(LOGGER_TEST_OBJS)
 	$(CPP) $(LOGGER_TEST_OBJS) -o $@
-CONFIG_TEST_OBJS = sp_config_unit_test.o SPConfig.o SPLogger.o
+CONFIG_TEST_OBJS = unit_tests/sp_config_unit_test.o SPConfig.o SPLogger.o
 $(CONFIG_TEST_EXEC): $(CONFIG_TEST_OBJS)
 	$(CPP) $(CONFIG_TEST_OBJS) -o $@
-KD_ARRAY_TEST_OBJS = sp_kd_array_unit_test.o SPKDArray.o SPPoint.o
+KD_ARRAY_TEST_OBJS = unit_tests/sp_kd_array_unit_test.o SPKDArray.o SPPoint.o
 $(KD_ARRAY_TEST_EXEC): $(KD_ARRAY_TEST_OBJS)
 	$(CPP) $(KD_ARRAY_TEST_OBJS) -o $@
 
@@ -54,11 +52,11 @@ SPKDTree.o: SPKDTree.c SPKDTree.h
 	$(CC) $(C_COMP_FLAG) -c $*.c
 
 # Tests
-sp_logger_unit_test.o: sp_logger_unit_test.c unit_test_util.h
+sp_logger_unit_test.o: ./unit_tests/sp_logger_unit_test.c ./unit_tests/unit_test_util.h
 	$(CC) $(C_COMP_FLAG) -c $*.c
-sp_config_unit_test.o: sp_config_unit_test.c unit_test_util.h
+sp_config_unit_test.o: ./unit_tests/sp_config_unit_test.c ./unit_tests/unit_test_util.h
 	$(CC) $(C_COMP_FLAG) -c $*.c
-sp_kd_array_unit_test.o: sp_kd_array_unit_test.c unit_test_util.h
+sp_kd_array_unit_test.o: ./unit_tests/sp_kd_array_unit_test.c ./unit_tests/unit_test_util.h
 	$(CC) $(C_COMP_FLAG) -c $*.c
 
 clean:
