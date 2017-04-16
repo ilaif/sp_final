@@ -37,11 +37,12 @@ static bool test_pointCreate() {
 }
 
 bool pointBasicCopyTest() {
+    int i;
     SPPoint* p = CreateSspointForTest();
     SPPoint* point_copy = spPointCopy(p);
     ASSERT_TRUE(spPointGetIndex(p) == spPointGetIndex(point_copy));
     ASSERT_TRUE(spPointGetDimension(p) == spPointGetDimension(point_copy));
-    for (int i = 0; i < spPointGetDimension(p); i++) {
+    for (i = 0; i < spPointGetDimension(p); i++) {
         ASSERT_TRUE(spPointGetAxisCoor(p, i) == spPointGetAxisCoor(point_copy, i));
     }
     spPointDestroy(p);
