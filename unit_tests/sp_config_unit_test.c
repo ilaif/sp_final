@@ -7,82 +7,58 @@
 //Logger is not defined
 static bool basicConfigTest() {
     SP_CONFIG_MSG *msg = (SP_CONFIG_MSG *) malloc(sizeof(msg));
-    SPConfig conf = spConfigCreate("C:/Users/Noa Biton/Desktop/pro/sp_final/basicConfigTest.cnf", msg);
+    SPConfig conf = spConfigCreate("/Users/ilaif/uni/2017a/software-project/final/unit_tests/basicConfigTest.cnf", msg);
     if (conf == NULL) {
+        printf("Error creating config: %d", *msg);
         free(msg);
         return false;
     }
     ASSERT_FALSE(*msg == SP_CONFIG_MISSING_DIR);
     bool extractionMode = spConfigIsExtractionMode(conf, msg);
-//  //  validateBooleanFunction(extractionMode,msg);
+
     ASSERT_FALSE(*msg == SP_CONFIG_INVALID_ARGUMENT);
     if (extractionMode) {
         ASSERT_TRUE(*msg == SP_CONFIG_SUCCESS);
     }
-    bool minGui = spConfigMinimalGui(conf,msg);
-//    validateBooleanFunction(minGui,msg);
+    bool minGui = spConfigMinimalGui(conf, msg);
 
     ASSERT_FALSE(*msg == SP_CONFIG_INVALID_ARGUMENT);
     if (minGui) {
         ASSERT_TRUE(*msg == SP_CONFIG_SUCCESS);
     }
 
-    int numOfImages =  spConfigGetNumOfImages(conf,msg);
-    //validateIntegerFunction(numOfImages,msg);
+    int numOfImages = spConfigGetNumOfImages(conf, msg);
     ASSERT_FALSE(*msg == SP_CONFIG_INVALID_ARGUMENT);
     if (numOfImages != -1) {
         ASSERT_TRUE(*msg == SP_CONFIG_SUCCESS);
     }
-    int numOfFeatures = spConfigGetNumOfFeatures(conf,msg);
-////    validateIntegerFunction(numOfFeatures,msg);
-//
+    int numOfFeatures = spConfigGetNumOfFeatures(conf, msg);
     ASSERT_FALSE(*msg == SP_CONFIG_INVALID_ARGUMENT);
     if (numOfFeatures != -1) {
         ASSERT_TRUE(*msg == SP_CONFIG_SUCCESS);
     }
-    //SP_LOGGER_LEVEL *level = SP_LOGGER_ERROR_LEVEL;
     SP_LOGGER_LEVEL level;
-    ASSERT_TRUE(spConfigGetLoggerLevel(&level,conf));
-    int numOfSimilarImages = spConfigGetNumOfSimilarImages(conf,msg);
-    //validateIntegerFunction(numOfSimilarImages,msg);
+    ASSERT_TRUE(spConfigGetLoggerLevel(&level, conf));
+    int numOfSimilarImages = spConfigGetNumOfSimilarImages(conf, msg);
     ASSERT_FALSE(*msg == SP_CONFIG_INVALID_ARGUMENT);
     if (numOfSimilarImages != -1) {
         ASSERT_TRUE(*msg == SP_CONFIG_SUCCESS);
     }
-    int knn = spConfigGetKNN(conf,msg);
+    int knn = spConfigGetKNN(conf, msg);
     ASSERT_FALSE(*msg == SP_CONFIG_INVALID_ARGUMENT);
     if (knn != -1) {
         ASSERT_TRUE(*msg == SP_CONFIG_SUCCESS);
     }
-    //validateIntegerFunction(knn,msg);
 
-    int PCADim = spConfigGetPCADim(conf,msg);
+    int PCADim = spConfigGetPCADim(conf, msg);
     ASSERT_FALSE(*msg == SP_CONFIG_INVALID_ARGUMENT);
     if (PCADim != -1) {
         ASSERT_TRUE(*msg == SP_CONFIG_SUCCESS);
     }
-    //validateIntegerFunction(PCADim,msg);
     spConfigDestroy(conf);
     free(msg);
     return true;
 }
-
-//bool validateBooleanFunction(bool value, SP_CONFIG_MSG *msg){
-//    ASSERT_FALSE(*msg = SP_CONFIG_INVALID_ARGUMENT);
-//    if (value) {
-//        ASSERT_TRUE(*msg = SP_CONFIG_SUCCESS);
-//    }
-//
-//}
-//
-//bool validateIntegerFunction(int value, SP_CONFIG_MSG *msg){
-//    ASSERT_FALSE(*msg == SP_CONFIG_INVALID_ARGUMENT);
-//    if (value != -1) {
-//        ASSERT_TRUE(*msg == SP_CONFIG_SUCCESS);
-//    }
-//
-//}
-
 
 int main() {
     RUN_TEST(basicConfigTest);

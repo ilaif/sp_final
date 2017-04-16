@@ -85,6 +85,11 @@ int strToInt(char *str, SP_CONFIG_MSG *msg) {
 
 //Initialize default values for the config properties
 void initDefaults() {
+    config->spImagesDirectory[0] = 0;
+    config->spImagesPrefix[0] = 0;
+    config->spImagesSuffix[0] = 0;
+    config->spNumOfImages = 0;
+
     config->spPCADimension = 20;
     strcpy(config->spPCAFilename, "pca.yml");
     config->spNumOfFeatures = 100;

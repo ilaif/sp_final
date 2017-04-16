@@ -81,9 +81,9 @@ SP_LOGGER_MSG spLoggerCreate(const char *filename, SP_LOGGER_LEVEL level) {
 }
 
 SP_LOGGER_MSG spLoggerPrintError(const char *msg, const char *file, const char *function, const int line) {
-    if (logger == NULL || msg == NULL || file == NULL || function == NULL || line < 0) { //Already defined
-        return SP_LOGGER_UNDIFINED;
-    }
+    if (logger == NULL) return SP_LOGGER_UNDIFINED;
+    if (msg == NULL || file == NULL || function == NULL || line < 0) return SP_LOGGER_INVAlID_ARGUMENT;
+
     SP_LOGGER_MSG res = SP_LOGGER_UNDIFINED;
     if (logger->level >= SP_LOGGER_ERROR_LEVEL) {
         res = spLoggerPrintMessage("ERROR", msg, file, function, line);
@@ -94,9 +94,9 @@ SP_LOGGER_MSG spLoggerPrintError(const char *msg, const char *file, const char *
 }
 
 SP_LOGGER_MSG spLoggerPrintWarning(const char *msg, const char *file, const char *function, const int line) {
-    if (logger == NULL || msg == NULL || file == NULL || function == NULL || line < 0) { //Already defined
-        return SP_LOGGER_UNDIFINED;
-    }
+    if (logger == NULL) return SP_LOGGER_UNDIFINED;
+    if (msg == NULL || file == NULL || function == NULL || line < 0) return SP_LOGGER_INVAlID_ARGUMENT;
+
     SP_LOGGER_MSG res;
     if (logger->level >= SP_LOGGER_WARNING_ERROR_LEVEL) {
         res = spLoggerPrintMessage("WARNING", msg, file, function, line);
@@ -107,9 +107,9 @@ SP_LOGGER_MSG spLoggerPrintWarning(const char *msg, const char *file, const char
 }
 
 SP_LOGGER_MSG spLoggerPrintInfo(const char *msg) {
-    if (logger == NULL || msg == NULL) {
-        return SP_LOGGER_UNDIFINED;
-    }
+    if (logger == NULL) return SP_LOGGER_UNDIFINED;
+    if (msg == NULL) return SP_LOGGER_INVAlID_ARGUMENT;
+
     if (logger->level >= SP_LOGGER_INFO_WARNING_ERROR_LEVEL) {
         int print_res = 0;
         if (logger->isStdOut) {
@@ -127,9 +127,9 @@ SP_LOGGER_MSG spLoggerPrintInfo(const char *msg) {
 }
 
 SP_LOGGER_MSG spLoggerPrintDebug(const char *msg, const char *file, const char *function, const int line) {
-    if (logger == NULL || msg == NULL || file == NULL || function == NULL || line <0) { //Already defined
-        return SP_LOGGER_UNDIFINED;
-    }
+    if (logger == NULL) return SP_LOGGER_UNDIFINED;
+    if (msg == NULL || file == NULL || function == NULL || line < 0) return SP_LOGGER_INVAlID_ARGUMENT;
+
     SP_LOGGER_MSG res = SP_LOGGER_UNDIFINED;
     if (logger->level >= SP_LOGGER_DEBUG_INFO_WARNING_ERROR_LEVEL) {
         res = spLoggerPrintMessage("DEBUG", msg, file, function, line);
@@ -141,9 +141,9 @@ SP_LOGGER_MSG spLoggerPrintDebug(const char *msg, const char *file, const char *
 
 
 SP_LOGGER_MSG spLoggerPrintMsg(const char *msg) {
-    if (logger == NULL || msg == NULL) {
-        return SP_LOGGER_UNDIFINED;
-    }
+    if (logger == NULL) return SP_LOGGER_UNDIFINED;
+    if (msg == NULL) return SP_LOGGER_INVAlID_ARGUMENT;
+
     if (logger->level >= SP_LOGGER_INFO_WARNING_ERROR_LEVEL) {
         int print_res = 0;
         if (logger->isStdOut) {

@@ -16,7 +16,10 @@ EXEC = SPCBIR
 LOGGER_TEST_EXEC = unit_tests/SPCBIR_LOGGER_TESTS
 CONFIG_TEST_EXEC = unit_tests/SPCBIR_CONFIG_TESTS
 KD_ARRAY_TEST_EXEC = unit_tests/SPCBIR_KD_ARRAY_TESTS
-all: $(EXEC) $(LOGGER_TEST_EXEC) $(CONFIG_TEST_EXEC) $(KD_ARRAY_TEST_EXEC)
+BPQUEUE_TEST_EXEC = unit_tests/SPCBIR_BPQUEUE_TESTS
+KD_TREE_TEST_EXEC = unit_tests/SPCBIR_KD_TREE_TESTS
+POINT_TEST_EXEC = unit_tests/SPCBIR_POINT_TESTS
+all: $(EXEC) $(LOGGER_TEST_EXEC) $(CONFIG_TEST_EXEC) $(KD_ARRAY_TEST_EXEC) $(BPQUEUE_TEST_EXEC) $(KD_TREE_TEST_EXEC) $(POINT_TEST_EXEC)
 
 OBJS = main.o main_aux.o SPConfig.o SPLogger.o SPPoint.o SPBPriorityQueue.o SPKDArray.o SPKDTree.o SPImageProc.o
 $(EXEC): $(OBJS)
@@ -30,6 +33,15 @@ $(CONFIG_TEST_EXEC): $(CONFIG_TEST_OBJS)
 KD_ARRAY_TEST_OBJS = unit_tests/sp_kd_array_unit_test.o SPKDArray.o SPPoint.o
 $(KD_ARRAY_TEST_EXEC): $(KD_ARRAY_TEST_OBJS)
 	$(CPP) $(KD_ARRAY_TEST_OBJS) -o $@
+KD_TREE_TEST_OBJS = unit_tests/sp_kd_tree_unit_test.o SPKDTree.o SPPoint.o SPBPriorityQueue.o SPConfig.o SPKDArray.o SPLogger.o
+$(KD_TREE_TEST_EXEC): $(KD_TREE_TEST_OBJS)
+	$(CPP) $(KD_TREE_TEST_OBJS) -o $@
+KD_BPQUEUE_TEST_OBJS = unit_tests/sp_bpqueue_unit_test.o SPBPriorityQueue.o
+$(BPQUEUE_TEST_EXEC): $(KD_BPQUEUE_TEST_OBJS)
+	$(CPP) $(KD_BPQUEUE_TEST_OBJS) -o $@
+POINT_TEST_OBJS = unit_tests/sp_point_unit_test.o SPPoint.o
+$(POINT_TEST_EXEC): $(POINT_TEST_OBJS)
+	$(CPP) $(POINT_TEST_OBJS) -o $@
 
 # Main
 main.o: main.cpp
@@ -57,6 +69,12 @@ sp_logger_unit_test.o: ./unit_tests/sp_logger_unit_test.c ./unit_tests/unit_test
 sp_config_unit_test.o: ./unit_tests/sp_config_unit_test.c ./unit_tests/unit_test_util.h
 	$(CC) $(C_COMP_FLAG) -c $*.c
 sp_kd_array_unit_test.o: ./unit_tests/sp_kd_array_unit_test.c ./unit_tests/unit_test_util.h
+	$(CC) $(C_COMP_FLAG) -c $*.c
+sp_bpqueue_unit_test.o: ./unit_tests/sp_bpqueue_unit_test.c ./unit_tests/unit_test_util.h
+	$(CC) $(C_COMP_FLAG) -c $*.c
+sp_kd_tree_unit_test.o: ./unit_tests/sp_kd_tree_unit_test.c ./unit_tests/unit_test_util.h
+	$(CC) $(C_COMP_FLAG) -c $*.c
+sp_point_unit_test.o: ./unit_tests/sp_point_unit_test.c ./unit_tests/unit_test_util.h
 	$(CC) $(C_COMP_FLAG) -c $*.c
 
 clean:

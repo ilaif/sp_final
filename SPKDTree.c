@@ -5,11 +5,6 @@
 
 // Private methods
 
-/**
- * Finds dimension with maximum spread between maximum and minimum points
- * @param SPKDArray kd_arr to do the search on
- * @return dimension with maximum spread
- */
 int findHighestSpreadDimension(SPKDArray *kd_arr) {
     int dim = spKdArrayDimension(kd_arr), n = spKdArraySize(kd_arr);
     SPPoint **points = spKdArrayGetPoints(kd_arr);
@@ -29,25 +24,10 @@ int findHighestSpreadDimension(SPKDArray *kd_arr) {
     return max_spread_dim;
 }
 
-/**
- * Helper function to check if a SPKDTree is a leaf by checking that it has not children
- * @param SPKDTree node
- * @return boolean value of Is leaf node
- */
 bool isLeaf(SPKDTree *node) {
     return (node->left == NULL && node->right == NULL);
 }
 
-/**
- * Builds a SPKDTree from an SPKDArray recursively
- * @param SPKDArray kd_arr
- * @param SP_KD_TREE_SPLIT_METHOD method:
- * RANDOM - Picks a random dimension for every level of the tree
- * MAX_SPREAD - Picks the dimension with the highest spread
- * INCREMENTAL - Increments dimension in every level module maximum dimension
- * @param int split_dim current dimension to split by (In case of INCREMENTAL only)
- * @return KDTree
- */
 SPKDTree *buildTree(SPKDArray *kd_arr, SP_KD_TREE_SPLIT_METHOD method, int split_dim) {
     int dim;
 
@@ -61,6 +41,7 @@ SPKDTree *buildTree(SPKDArray *kd_arr, SP_KD_TREE_SPLIT_METHOD method, int split
         node->d = 0;
         node->val = 0;
         node->data = spKdArrayGetPoints(kd_arr)[0];
+        spKdArrayDestroy(kd_arr);
         return node;
     }
 
@@ -103,7 +84,7 @@ SPKDTree *spKdTreeBuild(SPKDArray *kd_arr, const SPConfig conf) {
  */
 void spKdTreeDestroy(SPKDTree *t) {
     if (t->left == NULL && t->right == NULL) {
-        // just free memory
+        spPointDestroy(t->data);
     } else if (t->left == NULL) {
         spKdTreeDestroy(t->right);
     } else if (t->right == NULL) {

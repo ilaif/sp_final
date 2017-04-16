@@ -31,16 +31,44 @@ typedef struct sp_kd_tree_t {
  * @return the KdTree */
 SPKDTree *spKdTreeBuild(SPKDArray *kd_arr, const SPConfig conf);
 
- /**
-  * Free all memory allocation associated with spKdTree
-  * @param t to free*/
+/**
+ * Free all memory allocation associated with spKdTree
+ * @param t to free
+ */
 void spKdTreeDestroy(SPKDTree *t);
 
 /**
  * Recursive k nearest neighbor search algorithm
  * @param cur
  * @param bpq
- * @param p  */
+ * @param p
+ */
 void spKdTreeKNNSearch(SPKDTree *cur, SPBPQueue *bpq, SPPoint *p);
+
+/**
+ * Builds a SPKDTree from an SPKDArray recursively
+ * @param SPKDArray kd_arr
+ * @param SP_KD_TREE_SPLIT_METHOD method:
+ * RANDOM - Picks a random dimension for every level of the tree
+ * MAX_SPREAD - Picks the dimension with the highest spread
+ * INCREMENTAL - Increments dimension in every level module maximum dimension
+ * @param int split_dim current dimension to split by (In case of INCREMENTAL only)
+ * @return KDTree
+ */
+SPKDTree *buildTree(SPKDArray *kd_arr, SP_KD_TREE_SPLIT_METHOD method, int split_dim);
+
+/**
+ * Helper function to check if a SPKDTree is a leaf by checking that it has not children
+ * @param SPKDTree node
+ * @return boolean value of Is leaf node
+ */
+bool isLeaf(SPKDTree *node);
+
+/**
+ * Finds dimension with maximum spread between maximum and minimum points
+ * @param SPKDArray kd_arr to do the search on
+ * @return dimension with maximum spread
+ */
+int findHighestSpreadDimension(SPKDArray *kd_arr);
 
 #endif /* SPKDTREE_H_ */

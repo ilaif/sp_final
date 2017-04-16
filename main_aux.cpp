@@ -119,7 +119,6 @@ SPPoint **extractImageFeatures(SPConfig conf, int num_images, int *total_num_fea
     if (images_features_num_of_features == NULL) return NULL;
     if (*msg != SP_CONFIG_SUCCESS) return NULL;
 
-    //TODO: What happens if not is_extract and there are no features
     if (is_extract) {
         for (i = 0; i < num_images; i++) {
             *msg = spConfigGetImagePath(file_path, conf, i);

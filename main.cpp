@@ -118,13 +118,8 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    spKdArrayPointsDestroy(kd_arr);
-    spKdArrayDestroy(kd_arr);
     spKdTreeDestroy(t);
     free(res);
-    for (i = 0; i < total_num_features; i++) {
-        spPointDestroy(all_features[i]);
-    }
     free(all_features);
     free(image_knn_cou);
     if (features != NULL) free(features);
