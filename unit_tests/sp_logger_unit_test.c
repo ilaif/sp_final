@@ -189,12 +189,12 @@ static bool invalidArgumentsTest() {
 }
 
 int main() {
-//    RUN_TEST(basicLoggerErrorTest);
-//    RUN_TEST(basicLoggerTest);
-//    RUN_TEST(basicLoggerDebugTest);
-//    RUN_TEST(basicLoggerWarningTest);
-//    RUN_TEST(basicLoggerInfoTest);
-//    RUN_TEST(DestroyedLoggerTest);
+    RUN_TEST(basicLoggerErrorTest);
+    RUN_TEST(basicLoggerTest);
+    RUN_TEST(basicLoggerDebugTest);
+    RUN_TEST(basicLoggerWarningTest);
+    RUN_TEST(basicLoggerInfoTest);
+    RUN_TEST(DestroyedLoggerTest);
     RUN_TEST(invalidArgumentsTest);
 
     return 0;

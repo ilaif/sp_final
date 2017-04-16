@@ -6,27 +6,20 @@ INCLUDEPATH=/usr/local/opt/opencv3/include/
 LIBPATH=/usr/local/opt/opencv3/lib/
 LIBS=-lopencv_xfeatures2d -lopencv_features2d -lopencv_highgui -lopencv_imgcodecs -lopencv_imgproc -lopencv_core
 
-CPP_COMP_FLAG = -std=c++11 -Wall -Wextra \
--Werror -pedantic-errors -DNDEBUG
-
-C_COMP_FLAG = -std=c99 -Wall -Wextra \
--Werror -pedantic-errors -DNDEBUG
+CPP_COMP_FLAG = -std=c++11 -Wall -Wextra -Werror -pedantic-errors -DNDEBUG
+C_COMP_FLAG = -std=c99 -Wall -Wextra -Werror -pedantic-errors -DNDEBUG
 
 EXEC = SPCBIR
-LOGGER_TEST_EXEC = unit_tests/SPCBIR_LOGGER_TESTS
 CONFIG_TEST_EXEC = unit_tests/SPCBIR_CONFIG_TESTS
 KD_ARRAY_TEST_EXEC = unit_tests/SPCBIR_KD_ARRAY_TESTS
 BPQUEUE_TEST_EXEC = unit_tests/SPCBIR_BPQUEUE_TESTS
 KD_TREE_TEST_EXEC = unit_tests/SPCBIR_KD_TREE_TESTS
 POINT_TEST_EXEC = unit_tests/SPCBIR_POINT_TESTS
-all: $(EXEC) $(LOGGER_TEST_EXEC) $(CONFIG_TEST_EXEC) $(KD_ARRAY_TEST_EXEC) $(BPQUEUE_TEST_EXEC) $(KD_TREE_TEST_EXEC) $(POINT_TEST_EXEC)
+all: $(EXEC) $(CONFIG_TEST_EXEC) $(KD_ARRAY_TEST_EXEC) $(BPQUEUE_TEST_EXEC) $(KD_TREE_TEST_EXEC) $(POINT_TEST_EXEC)
 
 OBJS = main.o main_aux.o SPConfig.o SPLogger.o SPPoint.o SPBPriorityQueue.o SPKDArray.o SPKDTree.o SPImageProc.o
 $(EXEC): $(OBJS)
 	$(CPP) $(OBJS) -L$(LIBPATH) $(LIBS) -o $@
-LOGGER_TEST_OBJS = unit_tests/sp_logger_unit_test.o SPLogger.o
-$(LOGGER_TEST_EXEC): $(LOGGER_TEST_OBJS)
-	$(CPP) $(LOGGER_TEST_OBJS) -o $@
 CONFIG_TEST_OBJS = unit_tests/sp_config_unit_test.o SPConfig.o SPLogger.o
 $(CONFIG_TEST_EXEC): $(CONFIG_TEST_OBJS)
 	$(CPP) $(CONFIG_TEST_OBJS) -o $@
@@ -64,8 +57,6 @@ SPKDTree.o: SPKDTree.c SPKDTree.h
 	$(CC) $(C_COMP_FLAG) -c $*.c
 
 # Tests
-sp_logger_unit_test.o: ./unit_tests/sp_logger_unit_test.c ./unit_tests/unit_test_util.h
-	$(CC) $(C_COMP_FLAG) -c $*.c
 sp_config_unit_test.o: ./unit_tests/sp_config_unit_test.c ./unit_tests/unit_test_util.h
 	$(CC) $(C_COMP_FLAG) -c $*.c
 sp_kd_array_unit_test.o: ./unit_tests/sp_kd_array_unit_test.c ./unit_tests/unit_test_util.h
@@ -78,4 +69,4 @@ sp_point_unit_test.o: ./unit_tests/sp_point_unit_test.c ./unit_tests/unit_test_u
 	$(CC) $(C_COMP_FLAG) -c $*.c
 
 clean:
-	rm -f $(OBJS) $(EXEC) $(LOGGER_TEST_OBJS) $(LOGGER_TEST_EXEC) $(CONFIG_TEST_EXEC) $(CONFIG_TEST_OBJS) $(KD_ARRAY_TEST_EXEC) $(KD_ARRAY_TEST_OBJS)
+	rm -f $(OBJS) $(EXEC) $(CONFIG_TEST_EXEC) $(CONFIG_TEST_OBJS) $(KD_ARRAY_TEST_EXEC) $(KD_ARRAY_TEST_OBJS)
