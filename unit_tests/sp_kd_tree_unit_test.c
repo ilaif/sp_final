@@ -167,7 +167,7 @@ static bool testSpKdTreeKNNSearch() {
     SPBPQueue *bpq = spBPQueueCreate(3);
     SP_KD_TREE_SPLIT_METHOD method = MAX_SPREAD;
     double data_test[3] = {-1.0, 2.0, 4.0};
-    int dim_test = 2;
+    int dim_test = 3;
     int index_test = 1;
     SPPoint *point = spPointCreate((double *) data_test, dim_test, index_test);
     SPKDTree *tree = buildTree(b, method, 1);
@@ -183,15 +183,14 @@ static bool testSpKdTreeKNNSearch() {
     ASSERT_TRUE(currentSourceElement->value == 43);
     spBPQueuePeek(bpq, currentSourceElement);
     spBPQueueDequeue(bpq);
-    ASSERT_TRUE(currentSourceElement->value == 53);
+    ASSERT_TRUE(currentSourceElement->value == 50);
     spPointDestroy(point);
     return true;
 }
 
 int main() {
     RUN_TEST(testBuildTree);
-    //TOOD:
-    //RUN_TEST(testSpKdTreeKNNSearch);
+    RUN_TEST(testSpKdTreeKNNSearch);
     RUN_TEST(testFindHighestSpreadDimension);
     RUN_TEST(testIsLeaf);
 
