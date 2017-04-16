@@ -7,7 +7,7 @@
 //Logger is not defined
 static bool basicConfigTest() {
     SP_CONFIG_MSG *msg = (SP_CONFIG_MSG *) malloc(sizeof(msg));
-    SPConfig conf = spConfigCreate("/Users/ilaif/uni/2017a/software-project/final/unit_tests/basicConfigTest.cnf", msg);
+    SPConfig conf = spConfigCreate("./unit_tests/basicConfigTest.cnf", msg);
     if (conf == NULL) {
         printf("Error creating config: %d", *msg);
         free(msg);
