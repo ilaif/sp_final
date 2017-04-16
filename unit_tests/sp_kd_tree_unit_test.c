@@ -34,6 +34,7 @@ static SPKDArray *createArr() {
     free(d1);
     free(d2);
     free(d3);
+    free(arr);
     return a;
 }
 
@@ -125,7 +126,6 @@ static bool testBuildTree() {
     ASSERT_TRUE(spPointGetAxisCoor(point, 2) == 1);
 
     spKdTreeDestroy(tree);
-
     return true;
 }
 
@@ -155,6 +155,7 @@ static bool testIsLeaf() {
     assert(leftNode != NULL);
     node->left = leftNode;
     ASSERT_FALSE(isLeaf(node));
+
     free(node);
     free(leftNode);
 
