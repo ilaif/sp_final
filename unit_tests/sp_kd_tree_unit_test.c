@@ -173,7 +173,6 @@ static bool testSpKdTreeKNNSearch() {
     SPKDTree *tree = buildTree(b, method, 1);
     spKdTreeKNNSearch(tree, bpq, point);
     ASSERT_TRUE(spBPQueueIsFull(bpq));
-    //TODO: Finish this test
     BPQueueElement *currentSourceElement = (BPQueueElement *) malloc(sizeof(BPQueueElement));
     spBPQueuePeek(bpq, currentSourceElement);
     spBPQueueDequeue(bpq);
