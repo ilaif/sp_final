@@ -1,0 +1,68 @@
+---ERROR---
+- file: sp_logger_unit_test.c
+- function: invalidArgumentsTest
+- line: 146
+- message: MSG
+---ERROR---
+- file: sp_logger_unit_test.c
+- function: invalidArgumentsTest
+- line: 149
+- message: MSG
+---ERROR---
+- file: sp_logger_unit_test.c
+- function: invalidArgumentsTest
+- line: 152
+- message: MSG
+---ERROR---
+- file: sp_logger_unit_test.c
+- function: invalidArgumentsTest
+- line: 155
+- message: MSG
+---WARNING---
+- file: sp_logger_unit_test.c
+- function: invalidArgumentsTest
+- line: 158
+- message: MSG
+---WARNING---
+- file: sp_logger_unit_test.c
+- function: invalidArgumentsTest
+- line: 161
+- message: MSG
+---WARNING---
+- file: sp_logger_unit_test.c
+- function: invalidArgumentsTest
+- line: 164
+- message: MSG
+---WARNING---
+- file: sp_logger_unit_test.c
+- function: invalidArgumentsTest
+- line: 167
+- message: MSG
+---INFO---
+- message: MSGA
+---INFO---
+- message: MSGB
+---INFO---
+- message: MSGC
+---INFO---
+- message: MSGD
+---DEBUG---
+- file: sp_logger_unit_test.c
+- function: invalidArgumentsTest
+- line: 175
+- message: MSG
+---DEBUG---
+- file: sp_logger_unit_test.c
+- function: invalidArgumentsTest
+- line: 178
+- message: MSG
+---DEBUG---
+- file: sp_logger_unit_test.c
+- function: invalidArgumentsTest
+- line: 181
+- message: MSG
+---DEBUG---
+- file: sp_logger_unit_test.c
+- function: invalidArgumentsTest
+- line: 184
+- message: MSG
