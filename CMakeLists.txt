@@ -6,9 +6,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 #add_custom_target(final COMMAND make -C ${final_SOURCE_DIR} CLION_EXE_DIR=${PROJECT_BINARY_DIR})
 
-set(INCLUDEPATH C:/opencv/build/include/)
-set(LIBPATH C:/opencv/build/x86/mingw/lib/)
-set(LIBS -lopencv_xfeatures2d310 -lopencv_features2d310 -lopencv_highgui310 -lopencv_imgcodecs310 -lopencv_imgproc310 -lopencv_core310)
+set(INCLUDEPATH /usr/local/opt/opencv3/include/)
+set(LIBPATH /usr/local/opt/opencv3/lib/)
+set(LIBS -lopencv_xfeatures2d -lopencv_features2d -lopencv_highgui -lopencv_imgcodecs -lopencv_imgproc -lopencv_core)0)
 
 include_directories(${INCLUDEPATH})
 link_directories(${LIBPATH})
