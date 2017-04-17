@@ -4,6 +4,8 @@
 #include <memory.h>
 #include <assert.h>
 #include <ctype.h>
+#include <dirent.h>
+#include <errno.h>
 
 #include "SPConfig.h"
 #include "SPLogger.h"
@@ -14,6 +16,7 @@
 // Defining text message:
 #define INVALID_CONFIGURATION_LINE "Invalid configuration line"
 #define INVALID_VALUE "Invalid value - constraint not met"
+#define IMAGES_FOLDER_NOT_FOUND "Images folder not found"
 #define FEATURE_SUFFIX ".feats"
 
 // Global variable holding the logger
@@ -154,6 +157,13 @@ int loadConfigFromFile(FILE *f, const char *filename, SP_CONFIG_MSG *msg) {
             if (strchr(val, space) != NULL) {
                 *msg = SP_CONFIG_INVALID_STRING;
                 spRegularMessage(INVALID_VALUE, filename, i);
+                return i;
+            }
+            DIR *dir = opendir(val);
+            if (dir) closedir(dir);
+            else {
+                *msg = SP_CONFIG_INVALID_ARGUMENT;
+                spRegularMessage(IMAGES_FOLDER_NOT_FOUND, filename, i);
                 return i;
             }
             strcpy(config->spImagesDirectory, val);
