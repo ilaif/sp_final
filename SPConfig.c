@@ -45,6 +45,10 @@ struct sp_config_t {
 char *trimSpaces(char *str) {
     char *end;
 
+    if (str == NULL || *str == '\0') {
+        return str;
+    }
+
     // Trim leading space
     while (isspace((unsigned char) *str)) str++;
 
@@ -118,6 +122,9 @@ int loadConfigFromFile(FILE *f, const char *filename, SP_CONFIG_MSG *msg) {
         const char space = ' ';
 
         key = strtok(line, DELIM);
+        if (key == NULL) {
+            continue; // Empty line
+        }
         key = trimSpaces(key);
 
         if (*key == '#') {  // If first char is # then it's a comment
@@ -132,6 +139,9 @@ int loadConfigFromFile(FILE *f, const char *filename, SP_CONFIG_MSG *msg) {
         }
 
         val = strtok(NULL, DELIM);
+        if (val == NULL) {
+            continue; // Empty line
+        }
         val = trimSpaces(val);
         if (strchr(val, space) != NULL) {
             *msg = SP_CONFIG_INVALID_STRING;
