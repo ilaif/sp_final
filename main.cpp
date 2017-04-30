@@ -124,6 +124,7 @@ int main(int argc, char *argv[]) {
     }
 
     spKdTreeDestroy(t);
+    spBPQueueDestroy(bpq);
     free(res);
     free(all_features);
     free(image_knn_cou);
