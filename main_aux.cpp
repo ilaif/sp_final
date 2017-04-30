@@ -154,6 +154,7 @@ SPPoint **extractImageFeatures(SPConfig conf, int num_images, int *total_num_fea
             all_features[l] = images_features[i][j];
             l++;
         }
+        free(images_features[i]);
     }
 
     free(msg);

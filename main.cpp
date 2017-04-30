@@ -112,6 +112,8 @@ int main(int argc, char *argv[]) {
             }
         }
 
+        // Clean all variables for the next loop
+
         for (i = 0; i < num_images; i++) {
             image_knn_cou[i * 2 + 0] = 0;
             image_knn_cou[i * 2 + 1] = i;
