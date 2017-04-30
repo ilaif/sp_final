@@ -183,7 +183,12 @@ static bool testSpKdTreeKNNSearch() {
     spBPQueuePeek(bpq, currentSourceElement);
     spBPQueueDequeue(bpq);
     ASSERT_TRUE(currentSourceElement->value == 50);
+
+    free(bpq);
+    free(currentSourceElement);
     spPointDestroy(point);
+    spKdTreeDestroy(tree);
+
     return true;
 }
 
