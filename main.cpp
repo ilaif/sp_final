@@ -21,7 +21,7 @@ using namespace sp;
 
 int main(int argc, char *argv[]) {
 
-    int i, num_images, total_num_features, num_similar_images, knn, minimal_gui, num_of_features;
+    int i, num_images, total_num_features, num_similar_images, knn, minimal_gui, num_of_features = 0;
     char inp[BUF_SIZE], img_path[BUF_SIZE];
     ImageProc *imp;
     SPPoint **features = NULL, **all_features;
@@ -116,13 +116,17 @@ int main(int argc, char *argv[]) {
             image_knn_cou[i * 2 + 0] = 0;
             image_knn_cou[i * 2 + 1] = i;
         }
+
+        for (i = 0; i < num_of_features; i++) {
+            spPointDestroy(features[i]);
+        }
+        free(features);
     }
 
     spKdTreeDestroy(t);
     free(res);
     free(all_features);
     free(image_knn_cou);
-    if (features != NULL) free(features);
     free(conf);
     free(msg);
     spLoggerDestroy();
