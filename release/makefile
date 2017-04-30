@@ -2,8 +2,8 @@ CC = gcc
 CPP = g++
 # put all your object files here
 # The executabel filename
-INCLUDEPATH=/usr/local/Cellar/opencv3/3.2.0/include
-LIBPATH=/usr/local/Cellar/opencv3/3.2.0/lib
+INCLUDEPATH=/usr/local/lib/opencv-3.1.0/include/
+LIBPATH=/usr/local/lib/opencv-3.1.0/lib/
 LIBS=-lopencv_flann -lopencv_cudaarithm -lopencv_xfeatures2d -lopencv_features2d -lopencv_highgui -lopencv_imgcodecs -lopencv_imgproc -lopencv_core
 
 CPP_COMP_FLAG = -std=c++11 -Wall -Wextra -Werror -pedantic-errors -DNDEBUG

@@ -39,8 +39,3 @@ add_executable(sp_point_unit_test ${TEST_SPPoint})
 set(TEST_SPBPQueue unit_tests/sp_bpqueue_unit_test.c SPPoint.h SPBPriorityQueue.h SPBPriorityQueue.c SPPoint.c)
 add_executable(sp_bpqueue_unit_test ${TEST_SPBPQueue})
 
-set(TEST_KD_TREE_STEPHAN unit_tests/sp_KDTree_unit_test.c SPBPriorityQueue.c SPBPriorityQueue.h SPKDTree.h SPKDTree.c
-        SPKDArray.h SPKDArray.c SPPoint.h SPPoint.c SPConfig.h SPConfig.c SPLogger.c SPLogger.h)
-add_executable(sp_KDTree_unit_test ${TEST_KD_TREE_STEPHAN})
-
-
